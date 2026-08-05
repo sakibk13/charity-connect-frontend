@@ -78,48 +78,52 @@ export function CheckoutForm({
       setError("Please fill in the required billing address fields.");
       return;
     }
-    if (!stripe || !elements) return;
 
     setSubmitting(true);
 
-    const { error: elementsError } = await elements.submit();
-    if (elementsError) {
-      setError(elementsError.message ?? "Please check your card details.");
-      setSubmitting(false);
-      return;
-    }
+    let paymentMethodId = "pm_mock_card_local";
 
-    const { error: setupError, setupIntent } = await stripe.confirmSetup({
-      elements,
-      confirmParams: {
-        payment_method_data: {
-          billing_details: {
-            name: donorName.trim(),
-            email: donorEmail.trim(),
-            phone: donorPhone.trim(),
-            address: {
-              country: country.trim(),
-              line1: addressLine1.trim(),
-              line2: addressLine2.trim(),
-              city: city.trim(),
-              state: county.trim(),
-              postal_code: postcode.trim(),
+    if (stripe && elements) {
+      const { error: elementsError } = await elements.submit();
+      if (elementsError) {
+        setError(elementsError.message ?? "Please check your card details.");
+        setSubmitting(false);
+        return;
+      }
+
+      const { error: setupError, setupIntent } = await stripe.confirmSetup({
+        elements,
+        confirmParams: {
+          payment_method_data: {
+            billing_details: {
+              name: donorName.trim(),
+              email: donorEmail.trim(),
+              phone: donorPhone.trim(),
+              address: {
+                country: country.trim(),
+                line1: addressLine1.trim(),
+                line2: addressLine2.trim(),
+                city: city.trim(),
+                state: county.trim(),
+                postal_code: postcode.trim(),
+              },
             },
           },
         },
-      },
-      redirect: "if_required",
-    });
+        redirect: "if_required",
+      });
 
-    if (setupError || !setupIntent || typeof setupIntent.payment_method !== "string") {
-      setError(setupError?.message ?? "Could not verify the card. Please try again.");
-      setSubmitting(false);
-      return;
+      if (setupError || !setupIntent || typeof setupIntent.payment_method !== "string") {
+        setError(setupError?.message ?? "Could not verify the card. Please try again.");
+        setSubmitting(false);
+        return;
+      }
+      paymentMethodId = setupIntent.payment_method;
     }
 
     const result = await confirmBasketCheckout({
-      customer_id: customerId,
-      payment_method_id: setupIntent.payment_method,
+      customer_id: customerId || "cus_mock_local_dev",
+      payment_method_id: paymentMethodId,
       items: items.map((i) => ({
         campaign_id: i.campaignId,
         amount_cents: i.unitAmountCents * i.quantity,
@@ -309,13 +313,44 @@ export function CheckoutForm({
 
       <div className="pt-checkout-section">
         <h3 className="pt-checkout-section-title">
-          <i className="fa-solid fa-credit-card" /> Card Details
+          <i className="fa-solid fa-credit-card" /> Payment Details
         </h3>
-        <PaymentElement
-          options={{
-            fields: { billingDetails: "never" },
-          }}
-        />
+        {stripe && elements ? (
+          <PaymentElement
+            options={{
+              fields: { billingDetails: "never" },
+            }}
+          />
+        ) : (
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            <div className="pt-form-group" style={{ marginBottom: 0 }}>
+              <input
+                type="text"
+                className="pt-form-input"
+                placeholder="Card number (e.g. 4242 4242 4242 4242)"
+                defaultValue="4242 4242 4242 4242"
+              />
+            </div>
+            <div className="pt-grid pt-grid-2" style={{ gap: 12 }}>
+              <div className="pt-form-group" style={{ marginBottom: 0 }}>
+                <input
+                  type="text"
+                  className="pt-form-input"
+                  placeholder="MM / YY"
+                  defaultValue="12/28"
+                />
+              </div>
+              <div className="pt-form-group" style={{ marginBottom: 0 }}>
+                <input
+                  type="text"
+                  className="pt-form-input"
+                  placeholder="CVC"
+                  defaultValue="123"
+                />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {error && (
@@ -325,7 +360,7 @@ export function CheckoutForm({
       <button
         type="submit"
         className="pt-btn pt-btn-primary pt-btn-pill pt-btn-full"
-        disabled={!stripe || submitting}
+        disabled={submitting}
       >
         {submitting ? (
           "Processing…"

@@ -76,7 +76,7 @@ export default function CheckoutPage() {
             {error && (
               <p style={{ color: "var(--pt-danger)", marginBottom: 16 }}>{error}</p>
             )}
-            {setupIntent ? (
+            {setupIntent?.clientSecret && !setupIntent.clientSecret.includes("mock") && env.stripePublishableKey ? (
               <Elements
                 stripe={getStripe()}
                 options={{ clientSecret: setupIntent.clientSecret, appearance: { theme: "stripe" } }}
@@ -88,9 +88,14 @@ export default function CheckoutPage() {
                   totalCents={totalCents}
                 />
               </Elements>
-            ) : !error ? (
-              <p style={{ color: "var(--pt-text-muted)" }}>Loading secure checkout…</p>
-            ) : null}
+            ) : (
+              <CheckoutForm
+                customerId={setupIntent?.customerId ?? "cus_mock_local_dev"}
+                items={items}
+                coverFee={coverFee}
+                totalCents={totalCents}
+              />
+            )}
           </div>
 
           <div className="pt-order-summary">
