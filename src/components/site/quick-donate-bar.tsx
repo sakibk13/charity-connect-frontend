@@ -15,7 +15,7 @@ export const QUICK_DONATE_OPTIONS = [
   { id: "bright-futures", title: "Bright Futures" },
   { id: "emergency-aid", title: "Emergency Aid" },
   { id: "share-meals", title: "Share Meals" },
-  { id: "medi-help", title: "Medi Help" },
+  { id: "free-mobile-clinic", title: "Free Mobile Clinic" },
 ];
 
 const DEFAULT_OPTION_IMAGES: Record<string, string> = {
