@@ -1,0 +1,1733 @@
+/* ============================================================
+   AICT Global Bangladesh — public site theme, ported from the
+   charity-connect prototype (theme.css + main.css + components.css).
+   All custom properties are prefixed --pt- (prototype) so they never
+   collide with the shadcn/ui tokens (--primary, --border, --radius-*
+   etc.) that the admin panel still uses.
+   ============================================================ */
+
+:root {
+  /* Brand blue, matched to the AICT Global logo mark / org site (≈ #2D7BC2). */
+  --pt-primary-h: 209;
+  --pt-primary-s: 62%;
+  --pt-primary-l: 47%;
+  --pt-primary: hsl(var(--pt-primary-h), var(--pt-primary-s), var(--pt-primary-l));
+  --pt-primary-light: hsl(var(--pt-primary-h), var(--pt-primary-s), calc(var(--pt-primary-l) + 10%));
+  --pt-primary-dark: hsl(var(--pt-primary-h), var(--pt-primary-s), calc(var(--pt-primary-l) - 8%));
+  --pt-primary-alpha: hsla(var(--pt-primary-h), var(--pt-primary-s), var(--pt-primary-l), 0.1);
+
+  /* Brand magenta, matched to the logo's world-map mark (≈ #aa5ea4). */
+  --pt-accent-h: 305;
+  --pt-accent-s: 31%;
+  --pt-accent-l: 52%;
+  --pt-accent: hsl(var(--pt-accent-h), var(--pt-accent-s), var(--pt-accent-l));
+  --pt-accent-hover: hsl(var(--pt-accent-h), var(--pt-accent-s), calc(var(--pt-accent-l) - 8%));
+  --pt-accent-alpha: hsla(var(--pt-accent-h), var(--pt-accent-s), var(--pt-accent-l), 0.15);
+
+  --pt-bg-h: 210;
+  --pt-bg-s: 20%;
+  --pt-bg-l: 98%;
+  --pt-bg: hsl(var(--pt-bg-h), var(--pt-bg-s), var(--pt-bg-l));
+
+  --pt-card-bg: #ffffff;
+  --pt-card-hover-bg: #fafbfc;
+
+  --pt-text-h: 217;
+  --pt-text-s: 33%;
+  --pt-text-l: 17%;
+  --pt-text: hsl(var(--pt-text-h), var(--pt-text-s), var(--pt-text-l));
+  --pt-text-muted: hsl(var(--pt-text-h), 15%, 45%);
+  --pt-text-light: hsl(var(--pt-text-h), 10%, 75%);
+
+  --pt-border: hsl(var(--pt-text-h), 20%, 90%);
+  --pt-border-light: hsl(var(--pt-text-h), 20%, 95%);
+
+  --pt-success: #10b981;
+  --pt-success-alpha: rgba(16, 185, 129, 0.1);
+  --pt-warning: #f59e0b;
+  --pt-danger: #ef4444;
+  --pt-danger-alpha: rgba(239, 68, 68, 0.1);
+  --pt-info: #3b82f6;
+
+  --pt-font-display: var(--font-outfit), sans-serif;
+  --pt-font-body: var(--font-plus-jakarta), sans-serif;
+
+  --pt-header-height: 80px;
+  --pt-container-width: 1280px;
+  --pt-radius-sm: 8px;
+  --pt-radius-md: 14px;
+  --pt-radius-lg: 24px;
+  --pt-radius-full: 9999px;
+
+  --pt-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.04);
+  --pt-shadow-md: 0 8px 16px rgba(0, 0, 0, 0.06);
+  --pt-shadow-lg: 0 16px 36px rgba(45, 123, 194, 0.1);
+  --pt-shadow-accent: 0 8px 24px hsla(var(--pt-accent-h), var(--pt-accent-s), var(--pt-accent-l), 0.25);
+
+  --pt-glass-bg: rgba(255, 255, 255, 0.7);
+  --pt-glass-border: rgba(255, 255, 255, 0.4);
+  --pt-glass-blur: blur(12px);
+
+  --pt-transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --pt-transition-normal: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.dark-mode {
+  --pt-bg-h: 229;
+  --pt-bg-s: 60%;
+  --pt-bg-l: 8%;
+  --pt-bg: hsl(var(--pt-bg-h), var(--pt-bg-s), var(--pt-bg-l));
+
+  --pt-card-bg: hsl(var(--pt-bg-h), var(--pt-bg-s), 13%);
+  --pt-card-hover-bg: hsl(var(--pt-bg-h), var(--pt-bg-s), 16%);
+
+  /* Primary swaps from blue to the logo's magenta for dark mode (reads
+     better against a near-black background than the light-mode blue would),
+     and accent swaps the other way to blue — same two brand hues as light
+     mode, just inverted emphasis. Every derived var has to be redeclared
+     here too (not just the -h/-s/-l primitives): --pt-primary's
+     `hsl(var(--pt-primary-h), ...)` is resolved once where it's declared
+     (:root) and that resolved color is what inherits down, so overriding
+     the primitives alone doesn't reach it. */
+  --pt-primary-h: 305;
+  --pt-primary-s: 60%;
+  --pt-primary-l: 62%;
+  --pt-primary: hsl(var(--pt-primary-h), var(--pt-primary-s), var(--pt-primary-l));
+  --pt-primary-light: hsl(var(--pt-primary-h), var(--pt-primary-s), calc(var(--pt-primary-l) + 10%));
+  --pt-primary-dark: hsl(var(--pt-primary-h), var(--pt-primary-s), calc(var(--pt-primary-l) - 8%));
+  --pt-primary-alpha: hsla(var(--pt-primary-h), var(--pt-primary-s), var(--pt-primary-l), 0.16);
+
+  --pt-accent-h: 209;
+  --pt-accent-s: 70%;
+  --pt-accent-l: 58%;
+  --pt-accent: hsl(var(--pt-accent-h), var(--pt-accent-s), var(--pt-accent-l));
+  --pt-accent-hover: hsl(var(--pt-accent-h), var(--pt-accent-s), calc(var(--pt-accent-l) - 8%));
+  --pt-accent-alpha: hsla(var(--pt-accent-h), var(--pt-accent-s), var(--pt-accent-l), 0.18);
+
+  --pt-text-h: 210;
+  --pt-text-s: 40%;
+  --pt-text-l: 96%;
+  --pt-text: hsl(var(--pt-text-h), var(--pt-text-s), var(--pt-text-l));
+  --pt-text-muted: hsl(var(--pt-text-h), 20%, 70%);
+  --pt-text-light: hsl(var(--pt-text-h), 15%, 45%);
+
+  --pt-border: hsl(var(--pt-bg-h), 35%, 20%);
+  --pt-border-light: hsl(var(--pt-bg-h), 35%, 16%);
+
+  --pt-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+  --pt-shadow-md: 0 8px 20px rgba(0, 0, 0, 0.35);
+  --pt-shadow-lg: 0 16px 36px rgba(0, 0, 0, 0.5);
+
+  --pt-glass-bg: rgba(15, 16, 46, 0.65);
+  --pt-glass-border: rgba(244, 114, 182, 0.14);
+}
+
+/* ---------- Base ---------- */
+.pt-root {
+  font-family: var(--pt-font-body);
+  background-color: var(--pt-bg);
+  color: var(--pt-text);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: background-color var(--pt-transition-normal), color var(--pt-transition-normal);
+}
+
+.pt-root h1, .pt-root h2, .pt-root h3, .pt-root h4, .pt-root h5, .pt-root h6 {
+  font-family: var(--pt-font-display);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--pt-text);
+}
+
+/* :not(.pt-btn) is deliberate: ".pt-root a" (class+element, specificity 0,1,1)
+   would otherwise beat ".pt-btn-primary"/".pt-btn-accent" (one class, 0,1,0)
+   regardless of source order, silently overriding their white text back to
+   teal — invisible text on a teal/amber fill, on every <Link>-rendered
+   button (native <button> CTAs were never affected, only anchors). Button
+   color is fully owned by its own .pt-btn-* variant class, always. */
+.pt-root a:not(.pt-btn) {
+  color: var(--pt-primary);
+  text-decoration: none;
+  transition: color var(--pt-transition-fast);
+}
+
+.pt-root a:not(.pt-btn):hover {
+  color: var(--pt-primary-light);
+}
+
+/* Same specificity fix as documented above: the floating donate button is
+   an <a> outside .pt-btn, so ".pt-root a:not(.pt-btn)" (0,2,1) would
+   otherwise beat its own white text back to the primary link color. */
+.pt-root a.pt-floating-donate,
+.pt-root a.pt-floating-donate:hover {
+  color: #fff;
+}
+
+/* Same fix again for every anchor inside the new full-bleed footer — its
+   text is deliberately white/translucent-white, not the primary link blue. */
+.pt-root .pt-footer-links-dot a,
+.pt-root .pt-footer-contact a {
+  color: var(--pt-footer-text);
+}
+.pt-root .pt-footer-legal a {
+  color: var(--pt-footer-text-muted);
+}
+.pt-root .pt-footer-links-dot a:hover,
+.pt-root .pt-footer-contact a:hover,
+.pt-root .pt-footer-legal a:hover {
+  color: #fff;
+}
+
+.pt-app-content {
+  flex: 1 0 auto;
+  margin-top: var(--pt-header-height);
+  display: flex;
+  flex-direction: column;
+}
+
+.pt-container {
+  width: 100%;
+  max-width: var(--pt-container-width);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.pt-section {
+  padding: 56px 0;
+}
+
+.pt-section-title {
+  font-size: 2.5rem;
+  margin-bottom: 12px;
+  text-align: left;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.pt-section-title::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 4px;
+  background: var(--pt-accent);
+  margin-top: 16px;
+  border-radius: var(--pt-radius-full);
+}
+
+.pt-section-subtitle {
+  text-align: left;
+  color: var(--pt-text-muted);
+  max-width: 600px;
+  margin: 0 0 50px 0;
+  font-size: 1.1rem;
+}
+
+.pt-grid {
+  display: grid;
+  gap: 30px;
+}
+.pt-grid-2 { grid-template-columns: repeat(2, 1fr); }
+.pt-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.pt-grid-4 { grid-template-columns: repeat(4, 1fr); }
+.pt-campaign-hero-grid { grid-template-columns: 1fr 380px; }
+
+@media (max-width: 1024px) {
+  .pt-grid-4 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  .pt-section { padding: 40px 0; }
+  .pt-section-title { font-size: 2rem; }
+  .pt-grid-3, .pt-grid-2, .pt-grid-4, .pt-campaign-hero-grid { grid-template-columns: 1fr; }
+}
+
+/* ---------- Header ---------- */
+.pt-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--pt-header-height);
+  background: var(--pt-glass-bg);
+  backdrop-filter: var(--pt-glass-blur);
+  -webkit-backdrop-filter: var(--pt-glass-blur);
+  border-bottom: 1px solid var(--pt-glass-border);
+  z-index: 100;
+  transition: background-color var(--pt-transition-normal), border var(--pt-transition-normal);
+}
+
+/* Transparent/glass look shown only over the homepage hero, before scrolling
+   past it — see the header.tsx comment for why it's homepage-only. Reverts to
+   the normal solid `.pt-header` look (above) once the visitor scrolls, since
+   every other part of the page is a regular light background, not a photo. */
+.pt-header-overlay {
+  /* Deliberately a much lighter blur than --pt-glass-blur (12px) — that
+     amount smeared the hero image into a fog and made the header read as
+     "blurry" rather than "glass." A few px keeps the photo recognizable
+     while still softening it enough for text to sit on top of. */
+  background: rgba(15, 23, 42, 0.28);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  border-bottom-color: transparent;
+}
+
+/* .pt-logo and .pt-nav-link are both rendered as <Link> (anchor) elements,
+   so ".pt-root a:not(.pt-btn)" above (0,2,1) — added for the button-text bug
+   — outranks a plain ".pt-header-overlay .pt-logo" (0,2,0) regardless of
+   source order, silently forcing the teal link color back on and defeating
+   this override. Chaining ".pt-header.pt-header-overlay" (0,3,0) beats it. */
+.pt-header.pt-header-overlay .pt-logo,
+.pt-header.pt-header-overlay .pt-theme-toggle,
+.pt-header.pt-header-overlay .pt-currency-select,
+.pt-header.pt-header-overlay .pt-mobile-toggle {
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+}
+
+.pt-header.pt-header-overlay .pt-theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--pt-accent);
+}
+
+@media (min-width: 769px) {
+  .pt-header.pt-header-overlay .pt-nav-link,
+  .pt-header.pt-header-overlay .pt-nav-link-caret i {
+    color: #fff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+  }
+
+  .pt-header.pt-header-overlay .pt-nav-link:hover,
+  .pt-header.pt-header-overlay .pt-nav-link.active {
+    color: var(--pt-accent);
+  }
+}
+
+.pt-header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  padding: 0 24px;
+  max-width: var(--pt-container-width);
+  margin: 0 auto;
+}
+
+.pt-header .pt-logo { margin-left: 16px; }
+
+.pt-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--pt-font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--pt-primary);
+  transition: color var(--pt-transition-normal), text-shadow var(--pt-transition-normal);
+}
+
+.pt-logo i { font-size: 1.8rem; color: var(--pt-accent); }
+
+.pt-logo-img {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--pt-radius-sm);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.pt-nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  list-style: none;
+}
+
+.pt-nav-link {
+  font-weight: 500;
+  color: var(--pt-text);
+  position: relative;
+  padding: 8px 0;
+  transition: color var(--pt-transition-normal), text-shadow var(--pt-transition-normal);
+}
+
+.pt-nav-link:hover, .pt-nav-link.active { color: var(--pt-primary-light); }
+
+.pt-nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--pt-accent);
+  transition: width var(--pt-transition-fast);
+}
+
+.pt-nav-link:hover::after, .pt-nav-link.active::after { width: 100%; }
+
+.pt-nav-link-caret {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.pt-nav-link-caret i {
+  font-size: 0.7rem;
+  color: var(--pt-text-light);
+  transition: transform var(--pt-transition-fast);
+}
+.pt-nav-item:hover .pt-nav-link-caret i { transform: rotate(180deg); }
+
+.pt-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.pt-theme-toggle {
+  background: none;
+  border: none;
+  color: var(--pt-text);
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: var(--pt-radius-full);
+  transition: background var(--pt-transition-fast), color var(--pt-transition-fast);
+}
+
+.pt-theme-toggle:hover { background: var(--pt-primary-alpha); color: var(--pt-accent); }
+
+.pt-currency-select {
+  background: none;
+  border: 1.5px solid var(--pt-border);
+  color: var(--pt-text);
+  font-family: var(--pt-font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: var(--pt-radius-full);
+  transition: border-color var(--pt-transition-fast), color var(--pt-transition-fast);
+}
+
+.pt-currency-select:hover, .pt-currency-select:focus { border-color: var(--pt-primary); color: var(--pt-primary); outline: none; }
+
+/* ---------- Currency picker (custom dropdown) ---------- */
+.pt-currency-picker { position: relative; }
+
+.pt-currency-trigger { display: inline-flex; align-items: center; gap: 7px; }
+.pt-currency-caret { font-size: 0.6rem; transition: transform var(--pt-transition-fast); }
+.pt-currency-caret.open { transform: rotate(180deg); }
+
+.pt-currency-panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  background: var(--pt-card-bg);
+  border: 1px solid var(--pt-border);
+  border-radius: var(--pt-radius-md);
+  box-shadow: var(--pt-shadow-lg);
+  min-width: 280px;
+  max-height: 380px;
+  overflow-y: auto;
+  padding: 8px;
+  z-index: 200;
+}
+
+.pt-currency-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  background: none;
+  border-radius: var(--pt-radius-sm);
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--pt-font-body);
+  transition: background var(--pt-transition-fast);
+}
+.pt-currency-item:hover { background: var(--pt-border-light); }
+.pt-currency-item.active { background: var(--pt-accent); }
+
+.pt-currency-item-symbol { width: 36px; flex-shrink: 0; font-weight: 700; color: var(--pt-text); }
+.pt-currency-item-code { width: 46px; flex-shrink: 0; font-weight: 700; color: var(--pt-text); }
+.pt-currency-item-name { flex: 1; color: var(--pt-text-muted); font-size: 0.85rem; }
+.pt-currency-item-check { color: #fff; margin-left: auto; flex-shrink: 0; }
+
+.pt-currency-item.active .pt-currency-item-symbol,
+.pt-currency-item.active .pt-currency-item-code {
+  color: #fff;
+}
+.pt-currency-item.active .pt-currency-item-name { color: rgba(255, 255, 255, 0.85); }
+
+/* Which icon shows is driven purely by CSS (not React state) so the
+   server-rendered markup never has to guess the visitor's saved theme —
+   avoids a hydration mismatch between server and client. The icon reflects
+   the CURRENT mode (sun while light, moon while dark), not the mode a click
+   would switch to.
+
+   Selectors here are deliberately two classes deep (.pt-theme-toggle i.pt-icon-*),
+   not one — Font Awesome's own `.fa-solid { display: inline-block }` base rule
+   is a single class, same specificity as a bare `.pt-icon-sun`, and its
+   stylesheet loads *after* ours (it's a separate <link> in <head>), so on a
+   specificity tie it wins by source order and both icons showed at once
+   regardless of this rule. Two classes beats one regardless of load order. */
+.pt-theme-toggle i.pt-icon-sun { display: inline; }
+.pt-theme-toggle i.pt-icon-moon { display: none; }
+body.dark-mode .pt-theme-toggle i.pt-icon-sun { display: none; }
+body.dark-mode .pt-theme-toggle i.pt-icon-moon { display: inline; }
+
+.pt-user-menu { position: relative; }
+
+.pt-user-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--pt-primary-alpha);
+  color: var(--pt-primary);
+  border: 1px solid var(--pt-border);
+  padding: 6px 14px;
+  border-radius: var(--pt-radius-full);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all var(--pt-transition-fast);
+}
+
+.pt-user-badge:hover { border-color: var(--pt-primary); background: var(--pt-primary); color: #fff; }
+
+.pt-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: var(--pt-card-bg);
+  border: 1px solid var(--pt-border);
+  border-radius: var(--pt-radius-md);
+  box-shadow: var(--pt-shadow-md);
+  width: 200px;
+  padding: 8px 0;
+  display: none;
+  flex-direction: column;
+  z-index: 110;
+}
+
+.pt-user-menu:hover .pt-dropdown-menu, .pt-dropdown-menu.show { display: flex; }
+
+.pt-dropdown-item {
+  padding: 10px 16px;
+  color: var(--pt-text);
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background var(--pt-transition-fast);
+  cursor: pointer;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+}
+
+.pt-dropdown-item:hover { background: var(--pt-border-light); color: var(--pt-primary); }
+
+.pt-dropdown-divider { height: 1px; background: var(--pt-border); margin: 6px 0; }
+
+/* ---------- Buttons ---------- */
+.pt-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  font-family: var(--pt-font-display);
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: var(--pt-radius-md);
+  border: none;
+  cursor: pointer;
+  transition: all var(--pt-transition-fast);
+}
+
+.pt-btn-primary { background: var(--pt-primary); color: #fff; }
+.pt-btn-primary:hover { background: var(--pt-primary-light); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(45, 123, 194, 0.25); }
+body.dark-mode .pt-btn-primary:hover { box-shadow: 0 4px 14px hsla(var(--pt-primary-h), var(--pt-primary-s), var(--pt-primary-l), 0.35); }
+
+.pt-btn-accent { background: var(--pt-accent); color: #fff; }
+.pt-btn-accent:hover { background: var(--pt-accent-hover); transform: translateY(-2px); box-shadow: var(--pt-shadow-accent); }
+
+.pt-btn-outline { background: transparent; border: 2px solid var(--pt-primary); color: var(--pt-primary); }
+.pt-btn-outline:hover { background: var(--pt-primary); color: #fff; }
+
+.pt-btn-secondary { background: var(--pt-border); color: var(--pt-text); }
+.pt-btn-secondary:hover { background: var(--pt-text-light); color: #fff; }
+
+.pt-btn-danger { background: var(--pt-danger); color: #fff; }
+.pt-btn-danger:hover { background: #dc2626; }
+
+.pt-btn-sm { padding: 6px 12px; font-size: 0.85rem; border-radius: var(--pt-radius-sm); }
+.pt-btn-lg { padding: 16px 32px; font-size: 1.1rem; }
+.pt-btn-full { width: 100%; }
+.pt-btn-pill { border-radius: var(--pt-radius-full); }
+
+.pt-card-cta-row { display: flex; gap: 10px; }
+.pt-card-cta-row .pt-btn { flex: 1; white-space: nowrap; }
+
+@media (max-width: 480px) {
+  .pt-card-cta-row { gap: 8px; }
+  .pt-card-cta-row .pt-btn {
+    padding: 10px 12px;
+    font-size: 0.8rem;
+    gap: 4px;
+  }
+}
+
+.pt-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+
+/* ---------- Cards ---------- */
+.pt-card {
+  background: var(--pt-card-bg);
+  border: 1px solid var(--pt-border);
+  border-radius: var(--pt-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--pt-shadow-sm);
+  transition: all var(--pt-transition-normal);
+  display: flex;
+  flex-direction: column;
+}
+
+.pt-card:hover { transform: translateY(-8px); box-shadow: var(--pt-shadow-lg); border-color: var(--pt-primary-alpha); }
+
+.pt-card-img-wrapper {
+  position: relative;
+  height: 220px;
+  overflow: hidden;
+  background-color: var(--pt-border-light);
+}
+
+.pt-card-img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--pt-transition-normal); }
+.pt-card:hover .pt-card-img { transform: scale(1.05); }
+
+.pt-card-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: var(--pt-glass-bg);
+  backdrop-filter: var(--pt-glass-blur);
+  border: 1px solid var(--pt-glass-border);
+  color: var(--pt-primary-dark);
+  font-weight: 700;
+  font-size: 0.75rem;
+  padding: 4px 12px;
+  border-radius: var(--pt-radius-full);
+}
+
+body.dark-mode .pt-card-badge { color: #fff; }
+
+.pt-card-body { padding: 24px; display: flex; flex-direction: column; flex-grow: 1; }
+.pt-card-title { font-size: 1.25rem; margin-bottom: 10px; }
+.pt-card-description {
+  color: var(--pt-text-muted);
+  font-size: 0.95rem;
+  margin-bottom: 20px;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.pt-progress-container { margin-top: auto; margin-bottom: 16px; }
+.pt-progress-labels { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.85rem; font-weight: 600; }
+.pt-progress-bar-bg { width: 100%; height: 8px; background: var(--pt-border); border-radius: var(--pt-radius-full); overflow: hidden; }
+.pt-progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--pt-primary), var(--pt-success));
+  border-radius: var(--pt-radius-full);
+  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pt-card-footer { padding: 0 24px 24px 24px; }
+
+/* ---------- Forms ---------- */
+.pt-form-group { margin-bottom: 20px; }
+.pt-form-label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.9rem; }
+
+.pt-form-input, .pt-form-select, .pt-form-textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid var(--pt-border);
+  background: var(--pt-card-bg);
+  color: var(--pt-text);
+  border-radius: var(--pt-radius-md);
+  font-family: inherit;
+  font-size: 0.95rem;
+  transition: all var(--pt-transition-fast);
+}
+
+.pt-form-input:focus, .pt-form-select:focus, .pt-form-textarea:focus {
+  border-color: var(--pt-primary);
+  outline: none;
+  box-shadow: 0 0 0 3px var(--pt-primary-alpha);
+}
+
+.pt-form-textarea { resize: vertical; min-height: 100px; }
+
+/* ---------- Toasts ---------- */
+.pt-toast-container {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 380px;
+  width: 100%;
+}
+
+.pt-toast {
+  background: var(--pt-card-bg);
+  border-left: 5px solid var(--pt-primary);
+  border-top: 1px solid var(--pt-border);
+  border-right: 1px solid var(--pt-border);
+  border-bottom: 1px solid var(--pt-border);
+  border-radius: var(--pt-radius-sm);
+  box-shadow: var(--pt-shadow-md);
+  padding: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  animation: pt-toast-in 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  position: relative;
+  overflow: hidden;
+}
+
+.pt-toast.pt-toast-out { animation: pt-toast-out 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+
+@keyframes pt-toast-in { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes pt-toast-out { from { transform: translateX(0); opacity: 1; } to { transform: translateX(120%); opacity: 0; } }
+
+.pt-toast-success { border-left-color: var(--pt-success); }
+.pt-toast-warning { border-left-color: var(--pt-warning); }
+.pt-toast-error { border-left-color: var(--pt-danger); }
+.pt-toast-info { border-left-color: var(--pt-info); }
+
+.pt-toast-icon { font-size: 1.25rem; }
+.pt-toast-success .pt-toast-icon { color: var(--pt-success); }
+.pt-toast-warning .pt-toast-icon { color: var(--pt-warning); }
+.pt-toast-error .pt-toast-icon { color: var(--pt-danger); }
+.pt-toast-info .pt-toast-icon { color: var(--pt-info); }
+
+.pt-toast-content { flex-grow: 1; }
+.pt-toast-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 2px; }
+.pt-toast-message { font-size: 0.85rem; color: var(--pt-text-muted); }
+.pt-toast-close { background: none; border: none; cursor: pointer; color: var(--pt-text-light); font-size: 1rem; }
+.pt-toast-close:hover { color: var(--pt-text); }
+
+/* ---------- Footer ----------
+   Full-bleed brand-blue footer, modeled directly on aictglobal.org's real
+   footer (captured via a headless-browser render — it's a Vite/React SPA
+   that doesn't expose markup to a plain fetch). Colors here are deliberately
+   NOT the theme-swapping --pt-primary/--pt-accent vars: the reference site's
+   footer is always blue/magenta regardless of anything else, so the footer
+   uses its own fixed --pt-footer-* primitives that don't flip in dark mode. */
+.pt-footer {
+  --pt-footer-bg: hsl(209, 62%, 47%);
+  --pt-footer-bg-dark: hsl(209, 62%, 37%);
+  --pt-footer-accent: hsl(305, 31%, 52%);
+  --pt-footer-accent-hover: hsl(305, 31%, 44%);
+  --pt-footer-text: rgba(255, 255, 255, 0.85);
+  --pt-footer-text-muted: rgba(255, 255, 255, 0.65);
+  --pt-footer-border: rgba(255, 255, 255, 0.18);
+
+  background: var(--pt-footer-bg);
+  color: var(--pt-footer-text);
+  font-size: 0.9rem;
+  margin-top: auto;
+}
+
+.pt-footer-main { padding: 36px 0 28px; }
+
+.pt-footer-grid {
+  display: grid;
+  grid-template-columns: 1.2fr repeat(4, 1fr);
+  gap: 28px;
+}
+
+.pt-footer-col h3 { font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 12px; }
+.pt-footer-links-dot { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+.pt-footer-links-dot a {
+  color: var(--pt-footer-text);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: color var(--pt-transition-fast);
+}
+.pt-footer-links-dot a::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--pt-footer-accent);
+  flex-shrink: 0;
+  transition: transform var(--pt-transition-fast);
+}
+.pt-footer-links-dot a:hover { color: #fff; }
+.pt-footer-links-dot a:hover::before { transform: scale(1.3); }
+
+.pt-footer-contact { list-style: none; display: flex; flex-direction: column; gap: 9px; margin-bottom: 10px; }
+.pt-footer-contact li { display: flex; align-items: flex-start; gap: 10px; }
+.pt-footer-contact i { color: var(--pt-footer-accent); margin-top: 3px; }
+.pt-footer-contact a { color: var(--pt-footer-text); transition: color var(--pt-transition-fast); }
+.pt-footer-contact a:hover { color: #fff; }
+
+.pt-social-links { display: flex; gap: 10px; margin-top: 10px; }
+.pt-social-btn {
+  width: 34px; height: 34px;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--pt-text);
+  display: flex; align-items: center; justify-content: center;
+  transition: all var(--pt-transition-fast);
+}
+.pt-social-btn:hover { background: var(--pt-footer-accent); transform: translateY(-3px); }
+
+/* Each platform's own brand color, on the white badge above — overridden
+   back to white on hover so the icon stays legible against the solid
+   accent-colored hover background. */
+.pt-social-btn .fa-facebook-f { color: #1877f2; }
+.pt-social-btn .fa-x-twitter { color: #000; }
+.pt-social-btn .fa-instagram { color: #e1306c; }
+.pt-social-btn .fa-youtube { color: #ff0000; }
+
+.pt-social-btn:hover .fa-facebook-f,
+.pt-social-btn:hover .fa-x-twitter,
+.pt-social-btn:hover .fa-instagram,
+.pt-social-btn:hover .fa-youtube {
+  color: #fff;
+}
+
+.pt-newsletter-form { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+.pt-newsletter-input {
+  padding: 11px 14px;
+  border: 1px solid var(--pt-footer-border);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border-radius: var(--pt-radius-md);
+  font-size: 0.85rem;
+}
+.pt-newsletter-input::placeholder { color: var(--pt-footer-text-muted); }
+.pt-newsletter-input:focus { outline: none; border-color: var(--pt-footer-accent); }
+.pt-newsletter-submit {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  background: var(--pt-footer-accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--pt-radius-md);
+  padding: 11px 16px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background var(--pt-transition-fast);
+}
+.pt-newsletter-submit:hover { background: var(--pt-footer-accent-hover); }
+
+.pt-footer-subbar {
+  border-top: 1px solid var(--pt-footer-border);
+  padding: 12px 0;
+}
+.pt-footer-subbar .pt-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.pt-footer-credit { color: var(--pt-footer-text-muted); font-size: 0.85rem; }
+.pt-footer-payments { display: flex; flex-wrap: wrap; gap: 8px; }
+.pt-footer-payments i {
+  width: 34px; height: 24px;
+  border-radius: 4px;
+  background: #fff;
+  color: var(--pt-footer-bg-dark);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+}
+
+.pt-footer-bottom {
+  background: var(--pt-footer-bg-dark);
+  padding: 12px 0;
+}
+.pt-footer-bottom .pt-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.pt-footer-bottom p { color: var(--pt-footer-text-muted); font-size: 0.8rem; }
+.pt-footer-legal { display: flex; gap: 24px; }
+.pt-footer-legal a { color: var(--pt-footer-text-muted); font-size: 0.8rem; transition: color var(--pt-transition-fast); }
+.pt-footer-legal a:hover { color: #fff; }
+
+@media (max-width: 1024px) { .pt-footer-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) {
+  .pt-footer-grid { grid-template-columns: 1fr; }
+  .pt-footer-bottom .pt-container { flex-direction: column; text-align: center; }
+}
+
+/* ---------- Event cards ---------- */
+.pt-event-card {
+  display: flex;
+  background: var(--pt-card-bg);
+  border: 1px solid var(--pt-border);
+  border-radius: var(--pt-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--pt-shadow-sm);
+  transition: all var(--pt-transition-normal);
+}
+.pt-event-card:hover { transform: translateY(-4px); box-shadow: var(--pt-shadow-md); border-color: var(--pt-primary-alpha); }
+
+.pt-event-date-badge {
+  background: var(--pt-primary-alpha);
+  color: var(--pt-primary);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  width: 100px; flex-shrink: 0;
+  border-right: 1px solid var(--pt-border);
+  font-family: var(--pt-font-display);
+}
+.pt-event-date-day { font-size: 2rem; font-weight: 800; }
+.pt-event-date-month { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+
+.pt-event-content { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
+.pt-event-meta { display: flex; gap: 16px; font-size: 0.8rem; color: var(--pt-text-muted); margin-bottom: 8px; flex-wrap: wrap; }
+.pt-event-meta i { color: var(--pt-accent); }
+.pt-event-title { font-size: 1.15rem; margin-bottom: 8px; }
+.pt-event-desc {
+  color: var(--pt-text-muted); font-size: 0.9rem; margin-bottom: 12px;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+
+@media (max-width: 600px) {
+  .pt-event-card { flex-direction: column; }
+  .pt-event-date-badge { width: 100%; height: 60px; flex-direction: row; gap: 8px; border-right: none; border-bottom: 1px solid var(--pt-border); }
+  .pt-event-date-day { font-size: 1.4rem; }
+}
+
+/* ---------- Nav mega menu (hover) ---------- */
+.pt-nav-item { position: relative; }
+
+.pt-mega-menu {
+  position: absolute;
+  /* Zero gap, deliberately — a positional gap (even a small one, e.g. "top:
+     calc(100% + 8px)") is a real dead zone: the pointer is over neither the
+     trigger nor the menu while crossing it, :hover is lost, the menu closes
+     via display:none, and it can't reopen just by the pointer arriving where
+     the menu would have been (that spot has nothing hoverable on it anymore).
+     Users reported exactly this — the menu closing before they could select
+     an item. Flush positioning removes the dead zone entirely: the pointer
+     is continuously over the trigger or the menu, never neither.
+     padding-top (not a margin/offset) gives the same visual breathing room
+     as before, but stays inside the hoverable box instead of outside it. */
+  top: 100%;
+  left: 0;
+  background: var(--pt-card-bg);
+  border: 1px solid var(--pt-border);
+  border-radius: var(--pt-radius-lg);
+  box-shadow: var(--pt-shadow-lg);
+  padding: 28px 24px 20px;
+  min-width: 460px;
+  display: none;
+  z-index: 120;
+}
+
+.pt-nav-item:hover .pt-mega-menu { display: block; }
+
+.pt-mega-menu-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px 32px;
+}
+
+.pt-mega-menu-item-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--pt-text);
+  margin-bottom: 2px;
+}
+
+.pt-mega-menu-item-subtitle {
+  font-size: 0.82rem;
+  color: var(--pt-text-muted);
+}
+
+.pt-mega-menu-viewall {
+  display: block;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--pt-border-light);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--pt-primary);
+}
+
+.pt-mega-menu-empty {
+  font-size: 0.9rem;
+  color: var(--pt-text-muted);
+}
+
+@media (max-width: 768px) {
+  .pt-mega-menu { display: none !important; }
+}
+
+/* ---------- Mobile nav ---------- */
+.pt-mobile-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--pt-text);
+  cursor: pointer;
+  padding: 8px;
+  transition: color var(--pt-transition-normal), text-shadow var(--pt-transition-normal);
+}
+
+@media (max-width: 768px) {
+  .pt-nav-menu {
+    display: none;
+    position: absolute;
+    top: var(--pt-header-height);
+    left: 0;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    background: var(--pt-card-bg);
+    border-bottom: 1px solid var(--pt-border);
+    padding: 20px 24px;
+    gap: 15px;
+    box-shadow: var(--pt-shadow-md);
+  }
+  .pt-nav-menu.pt-nav-open { display: flex; }
+  .pt-mobile-toggle { display: block; }
+  .pt-header-desktop-only { display: none; }
+}
+
+/* ---------- Zakat calculator ---------- */
+.zakat-hero {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--pt-primary) 0%, var(--pt-primary-dark) 100%);
+  padding: 72px 0 64px;
+  text-align: center;
+  color: #fff;
+}
+.zakat-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,.15);
+  backdrop-filter: blur(6px);
+  padding: 6px 18px;
+  border-radius: 100px;
+  font-size: .82rem;
+  font-weight: 600;
+  letter-spacing: .4px;
+  margin-bottom: 18px;
+  text-transform: uppercase;
+}
+.zakat-hero h1 {
+  font-family: var(--pt-font-display);
+  font-size: 2.75rem;
+  font-weight: 800;
+  margin: 0 0 14px;
+}
+.zakat-hero p { max-width: 620px; margin: 0 auto; font-size: 1.1rem; opacity: .88; line-height: 1.65; }
+
+.zakat-layout {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 36px;
+  align-items: start;
+  padding: 48px 0 64px;
+}
+@media (max-width: 1024px) {
+  .zakat-layout { grid-template-columns: 1fr; }
+  .zakat-results-panel { position: static !important; }
+}
+
+.zakat-section-card {
+  background: var(--pt-card-bg);
+  border: 1px solid var(--pt-border);
+  border-radius: var(--pt-radius-lg);
+  padding: 32px;
+  margin-bottom: 28px;
+}
+.zakat-section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+.zakat-section-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.15rem; flex-shrink: 0;
+}
+.zakat-section-icon.assets { background: rgba(34,197,94,.12); color: #22c55e; }
+.zakat-section-icon.liabilities { background: rgba(239,68,68,.12); color: #ef4444; }
+.zakat-section-header h3 { font-family: var(--pt-font-display); font-size: 1.25rem; font-weight: 700; margin: 0; color: var(--pt-text); }
+.zakat-section-header p { font-size: .85rem; color: var(--pt-text-muted); margin: 2px 0 0; }
+
+.zakat-field { margin-bottom: 20px; }
+.zakat-field:last-child { margin-bottom: 0; }
+.zakat-field-label { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: .92rem; color: var(--pt-text); margin-bottom: 6px; }
+.zakat-field-label i { font-size: .8rem; color: var(--pt-text-muted); opacity: .7; }
+.zakat-field-helper { font-size: .78rem; color: var(--pt-text-muted); margin-bottom: 8px; line-height: 1.45; }
+.zakat-input-wrap { position: relative; }
+.zakat-input-wrap .currency-symbol {
+  position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+  font-size: .92rem; font-weight: 700; color: var(--pt-text-muted); pointer-events: none;
+}
+.zakat-input {
+  width: 100%; padding: 12px 16px 12px 36px;
+  border: 1.5px solid var(--pt-border); border-radius: 10px;
+  background: var(--pt-bg); color: var(--pt-text);
+  font-size: .95rem; font-family: var(--pt-font-body); font-weight: 500;
+  transition: border-color .2s, box-shadow .2s;
+  box-sizing: border-box;
+}
+.zakat-input:focus { outline: none; border-color: var(--pt-primary); box-shadow: 0 0 0 3px rgba(34,197,94,.12); }
+
+.zakat-results-panel { position: sticky; top: 100px; }
+.zakat-results-card {
+  background: var(--pt-card-bg); border: 1px solid var(--pt-border);
+  border-radius: var(--pt-radius-lg); overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0,0,0,.08);
+}
+.zakat-results-header {
+  background: linear-gradient(135deg, var(--pt-primary) 0%, var(--pt-primary-dark) 100%);
+  padding: 24px 28px; color: #fff; text-align: center;
+}
+.zakat-results-header h3 { font-family: var(--pt-font-display); font-size: 1.15rem; font-weight: 700; margin: 0 0 4px; }
+.zakat-results-header p { font-size: .8rem; opacity: .75; margin: 0; }
+.zakat-results-body { padding: 28px; }
+.zakat-result-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--pt-border); font-size: .92rem; }
+.zakat-result-row:last-of-type { border-bottom: none; }
+.zakat-result-row .label { color: var(--pt-text-muted); font-weight: 500; }
+.zakat-result-row .value { font-weight: 700; color: var(--pt-text); font-family: var(--pt-font-display); }
+.zakat-result-row .value.positive { color: #22c55e; }
+.zakat-result-row .value.negative { color: #ef4444; }
+
+.zakat-nisab-section { margin: 20px 0; padding: 16px; background: var(--pt-bg); border-radius: 10px; }
+.zakat-nisab-labels { display: flex; justify-content: space-between; font-size: .78rem; color: var(--pt-text-muted); margin-bottom: 8px; font-weight: 600; }
+.zakat-progress-track { width: 100%; height: 10px; background: var(--pt-border); border-radius: 100px; overflow: hidden; position: relative; }
+.zakat-progress-fill { height: 100%; border-radius: 100px; transition: width .5s cubic-bezier(.4,0,.2,1), background .3s; min-width: 0; }
+.zakat-nisab-status { text-align: center; font-size: .82rem; font-weight: 600; margin-top: 8px; }
+
+.zakat-amount-display {
+  text-align: center; padding: 24px 16px; margin: 16px 0 0;
+  background: linear-gradient(135deg, rgba(34,197,94,.08) 0%, rgba(16,185,129,.05) 100%);
+  border-radius: 10px; border: 1.5px solid rgba(34,197,94,.18);
+}
+.zakat-amount-display .label-small { font-size: .78rem; text-transform: uppercase; letter-spacing: .8px; color: var(--pt-text-muted); font-weight: 700; margin-bottom: 6px; }
+.zakat-amount-display .big-amount { font-family: var(--pt-font-display); font-size: 2.5rem; font-weight: 800; color: var(--pt-accent); line-height: 1.1; }
+.zakat-amount-display .rate-note { font-size: .78rem; color: var(--pt-text-muted); margin-top: 6px; }
+
+.zakat-not-due { text-align: center; padding: 24px 16px; margin: 16px 0 0; background: var(--pt-bg); border-radius: 10px; border: 1.5px solid var(--pt-border); }
+.zakat-not-due i { font-size: 1.8rem; color: var(--pt-text-muted); opacity: .5; margin-bottom: 10px; }
+.zakat-not-due p { font-size: .9rem; color: var(--pt-text-muted); font-weight: 500; line-height: 1.5; margin: 0; }
+
+.zakat-donate-btn {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  width: 100%; padding: 16px 24px; margin-top: 20px; border: none; border-radius: 10px;
+  font-size: 1rem; font-weight: 700; font-family: var(--pt-font-body); cursor: pointer;
+  transition: all .25s; letter-spacing: .2px;
+}
+.zakat-donate-btn.active { background: linear-gradient(135deg, var(--pt-accent) 0%, #d97706 100%); color: #fff; box-shadow: 0 4px 16px rgba(245,158,11,.3); }
+.zakat-donate-btn.active:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(245,158,11,.4); }
+.zakat-donate-btn.disabled { background: var(--pt-border); color: var(--pt-text-muted); cursor: not-allowed; opacity: .6; }
+
+/* .zakat-donate-btn can render as an <a> (active/linked state) — ".pt-root
+   a:not(.pt-btn)" (0,2,1) would otherwise beat ".zakat-donate-btn.active"
+   (0,2,0) and force the white text back to the primary link color. Same bug
+   as documented above for .pt-logo/.pt-nav-link; ".pt-root a.zakat-donate-btn"
+   (0,3,1) settles it regardless of source order. */
+.pt-root a.zakat-donate-btn.active,
+.pt-root a.zakat-donate-btn.active:hover {
+  color: #fff;
+}
+
+.zakat-edu-section { padding: 0 0 80px; }
+.zakat-edu-title { text-align: center; margin-bottom: 40px; }
+.zakat-edu-title h2 { font-family: var(--pt-font-display); font-size: 1.85rem; font-weight: 800; color: var(--pt-text); margin: 0 0 10px; }
+.zakat-edu-title p { color: var(--pt-text-muted); font-size: 1rem; margin: 0; }
+.zakat-edu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+@media (max-width: 768px) { .zakat-edu-grid { grid-template-columns: 1fr; } }
+.zakat-edu-card { background: var(--pt-card-bg); border: 1px solid var(--pt-border); border-radius: var(--pt-radius-lg); padding: 32px 28px; transition: transform .25s, box-shadow .25s; }
+.zakat-edu-card:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(0,0,0,.08); }
+.zakat-edu-card-icon { width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; margin-bottom: 20px; }
+.zakat-edu-card h4 { font-family: var(--pt-font-display); font-size: 1.15rem; font-weight: 700; color: var(--pt-text); margin: 0 0 10px; }
+.zakat-edu-card p { color: var(--pt-text-muted); font-size: .88rem; line-height: 1.65; margin: 0; }
+
+/* ---------- Policy / legal document content ---------- */
+.pt-policy-content { max-width: 780px; margin: 0 auto; }
+.pt-policy-content h2 {
+  font-size: 1.4rem;
+  margin: 44px 0 14px;
+}
+.pt-policy-content h2:first-child { margin-top: 0; }
+.pt-policy-content p {
+  color: var(--pt-text-muted);
+  line-height: 1.75;
+  margin-bottom: 16px;
+}
+.pt-policy-content ul {
+  list-style: disc;
+  padding-left: 22px;
+  color: var(--pt-text-muted);
+  line-height: 1.75;
+  margin-bottom: 16px;
+}
+.pt-policy-content li { margin-bottom: 8px; }
+.pt-policy-content li strong { color: var(--pt-text); }
+.pt-policy-content .pt-policy-updated {
+  color: var(--pt-text-light);
+  font-size: 0.85rem;
+  margin-bottom: 40px;
+}
+
+/* ---------- Featured campaigns carousel ---------- */
+/* Native scroll-snap rather than a transform-index carousel: item width
+   already adapts per breakpoint via plain CSS below, so there's no need to
+   track "items per view" in JS to compute a transform offset — the arrow
+   buttons just measure one actual rendered card and scroll by that much. */
+.pt-carousel {
+  position: relative;
+}
+
+.pt-carousel-track {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  padding-bottom: 4px;
+}
+
+.pt-carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+.pt-carousel-item {
+  scroll-snap-align: start;
+  flex: 0 0 calc((100% - 48px) / 3);
+  min-width: 0;
+}
+
+@media (max-width: 1024px) {
+  .pt-carousel-item {
+    flex: 0 0 calc((100% - 24px) / 2);
+  }
+}
+
+@media (max-width: 640px) {
+  .pt-carousel-item {
+    flex: 0 0 100%;
+  }
+}
+
+.pt-carousel-controls {
+  display: flex;
+  justify-content: flex-end;
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.pt-carousel-arrow {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: none;
+  background: var(--pt-border-light);
+  color: var(--pt-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background var(--pt-transition-fast), color var(--pt-transition-fast);
+}
+
+.pt-carousel-arrow:hover:not(:disabled) {
+  background: var(--pt-primary-alpha);
+  color: var(--pt-primary);
+}
+
+.pt-carousel-arrow-primary {
+  background: var(--pt-accent);
+  color: #fff;
+}
+
+.pt-carousel-arrow-primary:hover:not(:disabled) {
+  background: var(--pt-accent-hover);
+  color: #fff;
+}
+
+.pt-carousel-arrow:disabled {
+  background: var(--pt-border-light);
+  color: var(--pt-border);
+  cursor: not-allowed;
+}
+
+/* ---------- Tabs / pills (category filters) ---------- */
+.pt-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+.pt-tab-btn {
+  background: none; border: none; padding: 8px 16px;
+  font-size: 0.9rem; font-weight: 600; color: var(--pt-text-muted);
+  cursor: pointer; border-radius: var(--pt-radius-full);
+  transition: all var(--pt-transition-fast);
+}
+.pt-tab-btn:hover { color: var(--pt-primary); }
+
+/* ---------- Homepage hero slider ---------- */
+/* `.pt-app-content` (above) pushes normal page content down by the fixed
+   header's height so the header never covers it — but that leaves a plain
+   background strip above the hero with nothing behind the header to show
+   through. Pulling the hero back up by that same amount (negative margin is
+   safe here: .pt-app-content is a flex container, and flex items don't
+   margin-collapse) puts the hero's own top edge at the true top of the
+   viewport, so the image extends behind the header and the header's glass
+   effect has an actual photo to blur/tint instead of blank background. */
+.pt-hero-slider {
+  position: relative;
+  height: 100vh;
+  min-height: 560px;
+  margin-top: calc(-1 * var(--pt-header-height));
+  overflow: hidden;
+  background: #0f172a;
+}
+
+.pt-hero-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 900ms ease;
+}
+
+.pt-hero-slide.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.pt-hero-slide-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pt-hero-slide-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, rgba(15, 23, 42, 0.75) 0%, rgba(15, 23, 42, 0.45) 55%, rgba(15, 23, 42, 0.15) 100%);
+}
+
+.pt-hero-slide-content {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 20px;
+  padding-top: var(--pt-header-height);
+  padding-bottom: 200px;
+}
+
+/* .pt-hero-slide-content prefix is deliberate: ".pt-root h1" (class+element,
+   specificity 0,1,1) would otherwise beat a bare ".pt-hero-slide-headline"
+   (0,1,0) and force the dark base heading color over this white hero text. */
+.pt-hero-slide-content .pt-hero-slide-headline {
+  color: #fff;
+  font-family: var(--pt-font-display);
+  font-size: 3.2rem;
+  font-weight: 800;
+  line-height: 1.08;
+  max-width: 620px;
+  margin: 0;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+}
+
+.pt-hero-slide-badge {
+  background: var(--pt-accent);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 8px 20px;
+  border-radius: var(--pt-radius-full);
+  display: inline-block;
+  box-shadow: var(--pt-shadow-accent);
+}
+
+/* Persistent gradient at the very bottom, independent of the current slide,
+   so the stats/controls stay legible no matter which background is showing. */
+.pt-hero-bottom-fade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 260px;
+  background: linear-gradient(to top, rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0));
+  pointer-events: none;
+  z-index: 4;
+}
+
+.pt-hero-bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 5;
+  padding-bottom: 28px;
+}
+
+.pt-hero-stats {
+  display: flex;
+  gap: 48px;
+  flex-wrap: wrap;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  margin-bottom: 20px;
+}
+
+.pt-hero-stats-value {
+  color: #fff;
+  font-family: var(--pt-font-display);
+  font-size: 2.1rem;
+  font-weight: 800;
+  line-height: 1.1;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+
+.pt-hero-stats-label {
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 4px;
+}
+
+.pt-hero-slider-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.pt-hero-arrow {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background var(--pt-transition-fast);
+}
+
+.pt-hero-arrow:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.pt-hero-dots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pt-hero-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  padding: 0;
+  transition: background var(--pt-transition-fast), width var(--pt-transition-fast);
+}
+
+.pt-hero-dot.active {
+  background: var(--pt-accent);
+  width: 26px;
+  border-radius: var(--pt-radius-full);
+}
+
+@media (max-width: 768px) {
+  .pt-hero-slide-content {
+    padding-bottom: 240px;
+  }
+
+  .pt-hero-slide-headline {
+    font-size: 2.2rem;
+  }
+
+  .pt-hero-stats {
+    gap: 28px;
+  }
+
+  .pt-hero-stats-value {
+    font-size: 1.6rem;
+  }
+}
+.pt-tab-btn.active { color: #fff; background: var(--pt-primary); }
+
+/* ---------- Quick donate bar (its own section, below the hero) ---------- */
+.pt-quickdonate-wrap {
+  position: relative;
+  z-index: 20;
+  padding: 48px 0;
+  background: var(--pt-border-light);
+  border-bottom: 1px solid var(--pt-border);
+}
+
+.pt-quickdonate-bar {
+  background: var(--pt-card-bg);
+  border-radius: var(--pt-radius-lg);
+  box-shadow: var(--pt-shadow-lg);
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.pt-quickdonate-label {
+  font-family: var(--font-roboto-slab), serif;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--pt-text);
+  white-space: nowrap;
+}
+
+.pt-quickdonate-freq { flex: 0 0 auto; width: auto; min-width: 180px; }
+.pt-quickdonate-freq .pt-freq-btn { flex-shrink: 0; padding: 8px 12px; font-size: 0.8rem; white-space: nowrap; }
+.pt-quickdonate-freq .pt-freq-btn.active { background: var(--pt-accent); }
+
+.pt-quickdonate-select {
+  padding: 9px 12px;
+  border: 1.5px solid var(--pt-border);
+  background: var(--pt-bg);
+  color: var(--pt-text);
+  border-radius: var(--pt-radius-md);
+  font-size: 0.85rem;
+  font-weight: 600;
+  min-width: 130px;
+  max-width: 170px;
+  cursor: pointer;
+}
+.pt-quickdonate-select:focus { outline: none; border-color: var(--pt-primary); }
+
+.pt-quickdonate-amounts { display: flex; gap: 6px; flex-wrap: wrap; }
+.pt-quickdonate-amounts .pt-amount-btn { white-space: nowrap; padding: 9px 10px; font-size: 0.85rem; }
+.pt-quickdonate-amounts .pt-amount-btn.active { background: var(--pt-accent); border-color: var(--pt-accent); }
+
+.pt-quickdonate-custom { width: 90px; flex: 0 0 auto; }
+.pt-quickdonate-custom input { padding: 9px 10px 9px 24px; font-size: 0.85rem; }
+.pt-quickdonate-custom .pt-currency-prefix { left: 10px; font-size: 0.85rem; }
+
+.pt-quickdonate-add { flex-shrink: 0; white-space: nowrap; padding: 10px 18px; }
+
+@media (max-width: 1200px) {
+  .pt-quickdonate-bar { justify-content: center; }
+}
+
+@media (max-width: 640px) {
+  .pt-quickdonate-wrap { padding: 32px 0; }
+  .pt-quickdonate-bar { padding: 18px; justify-content: stretch; }
+  .pt-quickdonate-label { width: 100%; text-align: center; }
+  .pt-quickdonate-freq { width: 100%; min-width: 0; }
+  .pt-quickdonate-select { flex: 1 1 100%; }
+  .pt-quickdonate-amounts { flex: 1 1 100%; justify-content: center; }
+  .pt-quickdonate-custom { flex: 1 1 auto; }
+  .pt-quickdonate-add { flex: 1 1 100%; justify-content: center; }
+}
+
+/* ---------- Donation cards ---------- */
+.pt-donate-card {
+  background: var(--pt-card-bg);
+  border: 1px solid var(--pt-border);
+  border-radius: var(--pt-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--pt-shadow-sm);
+  display: flex;
+  flex-direction: column;
+}
+
+.pt-donate-card-img-wrapper { position: relative; height: 180px; }
+.pt-donate-card-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.pt-donate-card-body { padding: 20px; display: flex; flex-direction: column; gap: 14px; flex: 1; }
+.pt-donate-card-title { font-size: 1.1rem; font-weight: 700; margin: 0; }
+
+.pt-freq-toggle { display: flex; background: var(--pt-border-light); border-radius: var(--pt-radius-full); padding: 4px; }
+.pt-freq-btn {
+  flex: 1;
+  border: none;
+  background: none;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--pt-text-muted);
+  border-radius: var(--pt-radius-full);
+  cursor: pointer;
+  transition: all var(--pt-transition-fast);
+}
+.pt-freq-btn.active { background: var(--pt-primary); color: #fff; }
+
+.pt-amount-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.pt-amount-btn {
+  border: 1px solid var(--pt-border);
+  background: var(--pt-card-bg);
+  padding: 10px 8px;
+  border-radius: var(--pt-radius-sm);
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all var(--pt-transition-fast);
+}
+.pt-amount-btn:hover { border-color: var(--pt-primary); }
+.pt-amount-btn.active { background: var(--pt-primary); color: #fff; border-color: var(--pt-primary); }
+
+.pt-donate-custom-wrap { position: relative; }
+.pt-donate-custom-wrap .pt-currency-prefix {
+  position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+  color: var(--pt-text-light); font-weight: 600;
+}
+.pt-donate-custom-wrap input {
+  width: 100%;
+  padding: 10px 12px 10px 26px;
+  border: 1px solid var(--pt-border);
+  border-radius: var(--pt-radius-sm);
+  font-size: 0.95rem;
+  background: var(--pt-card-bg);
+  color: var(--pt-text);
+}
+.pt-donate-custom-wrap input:focus { outline: none; border-color: var(--pt-primary); box-shadow: 0 0 0 3px var(--pt-primary-alpha); }
+
+/* ---------- Cart icon ---------- */
+.pt-cart-btn { position: relative; background: none; border: none; cursor: pointer; color: var(--pt-text); font-size: 1.2rem; padding: 6px; }
+.pt-cart-btn:hover { color: var(--pt-primary); }
+.pt-cart-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  background: var(--pt-accent);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  min-width: 16px;
+  height: 16px;
+  border-radius: var(--pt-radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3px;
+}
+
+/* ---------- Basket drawer ---------- */
+.pt-drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  z-index: 1900;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--pt-transition-normal);
+}
+.pt-drawer-overlay.pt-drawer-open { opacity: 1; pointer-events: auto; }
+
+.pt-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 420px;
+  max-width: 92vw;
+  background: var(--pt-card-bg);
+  box-shadow: var(--pt-shadow-lg);
+  z-index: 1950;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform var(--pt-transition-normal);
+}
+.pt-drawer.pt-drawer-open { transform: translateX(0); }
+
+.pt-drawer-header { padding: 20px; border-bottom: 1px solid var(--pt-border); display: flex; align-items: center; justify-content: space-between; }
+.pt-drawer-close { background: none; border: none; font-size: 1.1rem; color: var(--pt-text-muted); cursor: pointer; }
+.pt-drawer-close:hover { color: var(--pt-text); }
+
+.pt-drawer-body { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+.pt-drawer-footer { padding: 20px; border-top: 1px solid var(--pt-border); display: flex; flex-direction: column; gap: 12px; }
+
+.pt-basket-item { display: flex; gap: 12px; }
+.pt-basket-item-img { width: 64px; height: 64px; border-radius: var(--pt-radius-sm); object-fit: cover; flex-shrink: 0; background: var(--pt-border-light); }
+.pt-basket-item-info { flex: 1; min-width: 0; }
+.pt-basket-item-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 2px; }
+.pt-basket-item-sub { font-size: 0.78rem; color: var(--pt-text-muted); }
+.pt-basket-item-row { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; }
+
+.pt-qty-stepper { display: flex; align-items: center; gap: 8px; }
+.pt-qty-btn {
+  width: 24px; height: 24px;
+  border: 1px solid var(--pt-border);
+  background: var(--pt-card-bg);
+  border-radius: var(--pt-radius-sm);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.8rem;
+}
+.pt-qty-btn:hover { border-color: var(--pt-primary); color: var(--pt-primary); }
+.pt-basket-item-remove { background: none; border: none; color: var(--pt-text-light); cursor: pointer; font-size: 0.9rem; }
+.pt-basket-item-remove:hover { color: var(--pt-danger); }
+
+.pt-basket-fee-row { display: flex; align-items: flex-start; gap: 10px; font-size: 0.85rem; }
+.pt-basket-total-row { display: flex; align-items: center; justify-content: space-between; font-weight: 700; font-size: 1.1rem; }
+
+/* ---------- Checkout page ---------- */
+.pt-checkout-form { display: flex; flex-direction: column; gap: 20px; }
+.pt-checkout-section {
+  background: var(--pt-card-bg);
+  border: 1px solid var(--pt-border);
+  border-radius: var(--pt-radius-lg);
+  padding: 24px;
+  box-shadow: var(--pt-shadow-sm);
+}
+.pt-checkout-section-title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.pt-checkout-section-title i { color: var(--pt-primary); }
+
+.pt-order-summary {
+  background: var(--pt-card-bg);
+  border: 1px solid var(--pt-border);
+  border-radius: var(--pt-radius-lg);
+  padding: 24px;
+  box-shadow: var(--pt-shadow-sm);
+  height: fit-content;
+  position: sticky;
+  top: calc(var(--pt-header-height) + 20px);
+}
+.pt-order-summary-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--pt-border); font-size: 0.9rem; }
+.pt-order-summary-row-sub { font-size: 0.78rem; color: var(--pt-text-muted); }
+.pt-order-summary-total { display: flex; justify-content: space-between; font-weight: 700; font-size: 1.15rem; margin-top: 12px; }
