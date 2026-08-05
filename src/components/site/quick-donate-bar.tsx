@@ -26,6 +26,8 @@ export function QuickDonateBar({ campaigns }: { campaigns?: Campaign[] }) {
   const [selected, setSelected] = useState<number>(DONATION_PRESETS.one_time[0]);
   const [customAmount, setCustomAmount] = useState("");
 
+  const [isOpen, setIsOpen] = useState(false);
+
   const presets = DONATION_PRESETS[frequency];
   const customCents = customAmount
     ? Math.round((parseFloat(customAmount) / CURRENCIES[currency].rateFromUsd) * 100)
@@ -81,18 +83,35 @@ export function QuickDonateBar({ campaigns }: { campaigns?: Campaign[] }) {
             </button>
           </div>
 
-          <select
-            className="pt-quickdonate-select"
-            value={selectedOptionId}
-            onChange={(e) => setSelectedOptionId(e.target.value)}
-            aria-label="Select appeal to support"
-          >
-            {QUICK_DONATE_OPTIONS.map((opt) => (
-              <option key={opt.id} value={opt.id}>
-                {opt.title}
-              </option>
-            ))}
-          </select>
+          <div className="pt-custom-select-wrap">
+            <button
+              type="button"
+              className={`pt-quickdonate-select-trigger${isOpen ? " open" : ""}`}
+              onClick={() => setIsOpen(!isOpen)}
+              aria-label="Select appeal to support"
+            >
+              <span>{currentOption.title}</span>
+              <i className={`fa-solid fa-chevron-down pt-select-arrow${isOpen ? " open" : ""}`} />
+            </button>
+
+            {isOpen && (
+              <div className="pt-quickdonate-dropdown-menu">
+                {QUICK_DONATE_OPTIONS.map((opt) => (
+                  <button
+                    key={opt.id}
+                    type="button"
+                    className={`pt-dropdown-item${opt.id === selectedOptionId ? " selected" : ""}`}
+                    onClick={() => {
+                      setSelectedOptionId(opt.id);
+                      setIsOpen(false);
+                    }}
+                  >
+                    {opt.title}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
 
           <div className="pt-quickdonate-amounts">
             {presets.map((cents) => (
