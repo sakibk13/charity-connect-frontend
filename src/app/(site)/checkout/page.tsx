@@ -10,6 +10,7 @@ import { useCurrency } from "@/components/site/currency-context";
 import { computeBasketTotals } from "@/lib/basket-totals";
 import { createSetupIntent } from "@/lib/donation-actions";
 import { getStripe } from "@/lib/stripe-client";
+import { resolveImageUrl } from "@/lib/utils";
 
 export default function CheckoutPage() {
   const { items, coverFee } = useBasket();
@@ -78,18 +79,53 @@ export default function CheckoutPage() {
 
           <div className="pt-order-summary">
             <h3 style={{ marginBottom: 16 }}>Order Summary</h3>
-            {items.map((item) => (
-              <div key={item.key} className="pt-order-summary-row">
-                <span>
-                  {item.campaignTitle}
-                  <br />
-                  <span className="pt-order-summary-row-sub">
-                    {item.frequency === "monthly" ? "Monthly" : "One-time"} × {item.quantity}
-                  </span>
-                </span>
-                <strong>{format(item.unitAmountCents * item.quantity)}</strong>
-              </div>
-            ))}
+            {items.map((item) => {
+              const imgSrc = resolveImageUrl(item.campaignImage);
+              return (
+                <div key={item.key} className="pt-order-summary-row" style={{ display: "flex", gap: 12, alignItems: "center" }}>
+                  {imgSrc ? (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img
+                      src={imgSrc}
+                      alt={item.campaignTitle}
+                      style={{
+                        width: 48,
+                        height: 48,
+                        borderRadius: 8,
+                        objectFit: "cover",
+                        flexShrink: 0,
+                        background: "var(--pt-bg)",
+                      }}
+                    />
+                  ) : (
+                    <div
+                      style={{
+                        width: 48,
+                        height: 48,
+                        borderRadius: 8,
+                        flexShrink: 0,
+                        background: "var(--pt-primary-alpha)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: "var(--pt-primary)",
+                      }}
+                    >
+                      <i className="fa-solid fa-hand-holding-heart" />
+                    </div>
+                  )}
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontWeight: 600, fontSize: "0.9rem", color: "var(--pt-text)" }}>
+                      {item.campaignTitle}
+                    </div>
+                    <div style={{ fontSize: "0.75rem", color: "var(--pt-text-muted)" }}>
+                      {item.frequency === "monthly" ? "Monthly" : "One-time"} × {item.quantity}
+                    </div>
+                  </div>
+                  <strong style={{ whiteSpace: "nowrap" }}>{format(item.unitAmountCents * item.quantity)}</strong>
+                </div>
+              );
+            })}
             <div className="pt-order-summary-row" style={{ border: "none" }}>
               <span>Subtotal</span>
               <span>{format(subtotalCents)}</span>
