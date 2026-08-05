@@ -8,10 +8,12 @@ const SHOW_RAISED_SLUGS = new Set([
   "aqua-aid",
   "sustain-now",
   "building-hope",
+  "rebuild-hope",
   "bright-futures",
   "emergency-aid",
   "share-meals",
   "free-mobile-clinic",
+  "medi-help",
 ]);
 
 export function CampaignCard({ campaign }: { campaign: Campaign }) {

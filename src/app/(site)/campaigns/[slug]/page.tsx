@@ -54,7 +54,7 @@ export default async function CampaignDetailPage({
               scrollMarginTop: "calc(var(--pt-header-height) + 16px)",
             }}
           >
-            {["aqua-aid", "sustain-now", "building-hope", "bright-futures", "emergency-aid", "share-meals", "free-mobile-clinic"].includes(campaign.slug) && (
+            {["aqua-aid", "sustain-now", "building-hope", "rebuild-hope", "bright-futures", "emergency-aid", "share-meals", "free-mobile-clinic", "medi-help"].includes(campaign.slug) && (
               <CampaignProgress raised={campaign.raised} goal={campaign.goal} goalMarginBottom={16} />
             )}
 
