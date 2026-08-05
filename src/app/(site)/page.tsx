@@ -10,9 +10,9 @@ export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const [campaigns, heroSlides, galleryPhotos] = await Promise.all([
-    getCampaigns(),
-    getHeroSlides(),
-    getGalleryPhotos(),
+    getCampaigns().catch(() => []),
+    getHeroSlides().catch(() => []),
+    getGalleryPhotos().catch(() => []),
   ]);
   const featured = campaigns.slice(0, 9);
   const totalRaisedCents = Math.round(campaigns.reduce((sum, c) => sum + c.raised, 0) * 100);
