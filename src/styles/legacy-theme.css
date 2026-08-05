@@ -7,7 +7,7 @@
    ============================================================ */
 
 :root {
-  /* Brand blue, matched to the AICT Global logo mark / org site (≈ #2D7BC2). */
+  /* Main Brand Blue (#2D7BC2) used uniformly across all buttons, navigation, highlights, and CTAs */
   --pt-primary-h: 209;
   --pt-primary-s: 62%;
   --pt-primary-l: 47%;
@@ -16,13 +16,13 @@
   --pt-primary-dark: hsl(var(--pt-primary-h), var(--pt-primary-s), calc(var(--pt-primary-l) - 8%));
   --pt-primary-alpha: hsla(var(--pt-primary-h), var(--pt-primary-s), var(--pt-primary-l), 0.1);
 
-  /* Brand magenta, matched to the logo's world-map mark (≈ #aa5ea4). */
-  --pt-accent-h: 305;
-  --pt-accent-s: 31%;
-  --pt-accent-l: 52%;
-  --pt-accent: hsl(var(--pt-accent-h), var(--pt-accent-s), var(--pt-accent-l));
-  --pt-accent-hover: hsl(var(--pt-accent-h), var(--pt-accent-s), calc(var(--pt-accent-l) - 8%));
-  --pt-accent-alpha: hsla(var(--pt-accent-h), var(--pt-accent-s), var(--pt-accent-l), 0.15);
+  --pt-accent-h: 209;
+  --pt-accent-s: 62%;
+  --pt-accent-l: 47%;
+  --pt-accent: var(--pt-primary);
+  --pt-accent-hover: var(--pt-primary-dark);
+  --pt-accent-alpha: hsla(var(--pt-primary-h), var(--pt-primary-s), var(--pt-primary-l), 0.15);
+  --pt-shadow-accent: 0 4px 12px hsla(var(--pt-primary-h), var(--pt-primary-s), var(--pt-primary-l), 0.3);
 
   --pt-bg-h: 210;
   --pt-bg-s: 20%;
