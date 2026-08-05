@@ -10,20 +10,16 @@ export function resolveImageUrl(key: string | null | undefined): string {
   if (!key) return "";
   let url = key.trim();
 
-  // Campaign images are stored in /public on Vercel — serve directly from CDN
-  // These are paths like /static/campaigns/aqua-aid.jpg or https://.../.../aqua-aid.jpg
-  const isCampaignImage =
-    url.includes("/static/campaigns/") || url.includes("\\static\\campaigns\\");
-  const isHeroImage =
-    url.includes("/static/hero-slides/") || url.includes("\\static\\hero-slides\\");
+  // Campaign, hero, and gallery images are all in /public on Vercel — serve directly from CDN
+  const isStaticAsset =
+    url.includes("/static/campaigns/") ||
+    url.includes("/static/hero-slides/") ||
+    url.includes("/static/gallery/") ||
+    url.includes("\\static\\campaigns\\") ||
+    url.includes("\\static\\hero-slides\\") ||
+    url.includes("\\static\\gallery\\");
 
-  if (isCampaignImage) {
-    // Extract just the filename and serve from public/ (deployed on Vercel CDN)
-    const filename = url.split("/").pop()?.split("?")[0] || "";
-    if (filename) return `/${filename}`;
-  }
-
-  if (isHeroImage) {
+  if (isStaticAsset) {
     // Extract just the filename and serve from public/ (deployed on Vercel CDN)
     const filename = url.split("/").pop()?.split("?")[0] || "";
     if (filename) return `/${filename}`;
