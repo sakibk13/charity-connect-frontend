@@ -7,18 +7,18 @@
    ============================================================ */
 
 :root {
-  /* Main Brand Blue (#2D7BC2) used uniformly across all buttons, navigation, highlights, and CTAs */
-  --pt-primary-h: 209;
-  --pt-primary-s: 62%;
-  --pt-primary-l: 47%;
+  /* Main Brand Purple/Magenta (#AA5EA4) used uniformly across the entire website */
+  --pt-primary-h: 305;
+  --pt-primary-s: 31%;
+  --pt-primary-l: 52%;
   --pt-primary: hsl(var(--pt-primary-h), var(--pt-primary-s), var(--pt-primary-l));
   --pt-primary-light: hsl(var(--pt-primary-h), var(--pt-primary-s), calc(var(--pt-primary-l) + 10%));
   --pt-primary-dark: hsl(var(--pt-primary-h), var(--pt-primary-s), calc(var(--pt-primary-l) - 8%));
   --pt-primary-alpha: hsla(var(--pt-primary-h), var(--pt-primary-s), var(--pt-primary-l), 0.1);
 
-  --pt-accent-h: 209;
-  --pt-accent-s: 62%;
-  --pt-accent-l: 47%;
+  --pt-accent-h: 305;
+  --pt-accent-s: 31%;
+  --pt-accent-l: 52%;
   --pt-accent: var(--pt-primary);
   --pt-accent-hover: var(--pt-primary-dark);
   --pt-accent-alpha: hsla(var(--pt-primary-h), var(--pt-primary-s), var(--pt-primary-l), 0.15);
