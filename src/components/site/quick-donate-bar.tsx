@@ -26,6 +26,10 @@ const DEFAULT_OPTION_IMAGES: Record<string, string> = {
   "emergency-aid": "/static/campaigns/emergency-aid.jpg",
   "share-meals": "/static/campaigns/share-meals.jpg",
   "free-mobile-clinic": "/static/campaigns/free-mobile-clinic.jpg",
+  "ramadan-food-pack": "/static/campaigns/ramadan-food-pack.jpg",
+  "iftar-for-little-hearts": "/static/campaigns/iftar-for-little-hearts.jpg",
+  "food-relief": "/static/campaigns/food-relief.jpg",
+  "hope-and-hygiene": "/static/campaigns/hope-and-hygiene.jpg",
 };
 
 export function QuickDonateBar({ campaigns }: { campaigns?: Campaign[] }) {
