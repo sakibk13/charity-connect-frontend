@@ -3,6 +3,13 @@ function getApiUrl(): string {
   if (raw && (raw.startsWith("http://") || raw.startsWith("https://"))) {
     return raw.endsWith("/") ? raw.slice(0, -1) : raw;
   }
+  if (
+    typeof window !== "undefined" &&
+    !window.location.hostname.includes("localhost") &&
+    !window.location.hostname.includes("127.0.0.1")
+  ) {
+    return "https://charity-connect-backend.onrender.com";
+  }
   return "http://127.0.0.1:8000";
 }
 
