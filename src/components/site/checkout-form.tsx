@@ -328,11 +328,51 @@ export function CheckoutForm({
         <h3 className="pt-checkout-section-title">
           <i className="fa-solid fa-credit-card" /> Card Details
         </h3>
-        <PaymentElement
-          options={{
-            fields: { billingDetails: "never" },
-          }}
-        />
+        {stripe && elements ? (
+          <PaymentElement
+            options={{
+              fields: { billingDetails: "never" },
+            }}
+          />
+        ) : (
+          <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+            <div className="pt-form-group" style={{ marginBottom: 0 }}>
+              <label style={{ fontSize: "0.85rem", fontWeight: 600, marginBottom: 4, display: "block" }}>
+                Card Number
+              </label>
+              <input
+                type="text"
+                className="pt-form-input"
+                placeholder="4242 4242 4242 4242"
+                defaultValue="4242 4242 4242 4242"
+              />
+            </div>
+            <div className="pt-grid pt-grid-2" style={{ gap: 12 }}>
+              <div className="pt-form-group" style={{ marginBottom: 0 }}>
+                <label style={{ fontSize: "0.85rem", fontWeight: 600, marginBottom: 4, display: "block" }}>
+                  Expiration Date
+                </label>
+                <input
+                  type="text"
+                  className="pt-form-input"
+                  placeholder="MM / YY"
+                  defaultValue="12/28"
+                />
+              </div>
+              <div className="pt-form-group" style={{ marginBottom: 0 }}>
+                <label style={{ fontSize: "0.85rem", fontWeight: 600, marginBottom: 4, display: "block" }}>
+                  CVC / CVV
+                </label>
+                <input
+                  type="text"
+                  className="pt-form-input"
+                  placeholder="123"
+                  defaultValue="123"
+                />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {error && (
@@ -342,7 +382,7 @@ export function CheckoutForm({
       <button
         type="submit"
         className="pt-btn pt-btn-primary pt-btn-pill pt-btn-full"
-        disabled={!stripe || submitting}
+        disabled={submitting}
       >
         {submitting ? (
           "Processing…"
