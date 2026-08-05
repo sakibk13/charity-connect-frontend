@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { formatDate } from "@/lib/format";
+import { resolveImageUrl } from "@/lib/utils";
 import type { BlogPost } from "@/lib/types";
 
 export function BlogCard({ post }: { post: BlogPost }) {
@@ -10,7 +11,7 @@ export function BlogCard({ post }: { post: BlogPost }) {
         <div className="pt-card-img-wrapper" style={{ height: 180 }}>
           {post.image_key ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={post.image_key} alt={post.title} className="pt-card-img" />
+            <img src={resolveImageUrl(post.image_key)} alt={post.title} className="pt-card-img" />
           ) : null}
           <span className="pt-card-badge">{post.category}</span>
         </div>

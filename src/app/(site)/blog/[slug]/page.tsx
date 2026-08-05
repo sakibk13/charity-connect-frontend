@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 
 import { getBlogPost } from "@/lib/data";
 import { formatDate } from "@/lib/format";
+import { resolveImageUrl } from "@/lib/utils";
 
 export default async function BlogPostPage({
   params,
@@ -23,7 +24,7 @@ export default async function BlogPostPage({
         {post.image_key ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={post.image_key}
+            src={resolveImageUrl(post.image_key)}
             alt={post.title}
             style={{
               width: "100%",

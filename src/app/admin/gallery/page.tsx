@@ -6,6 +6,7 @@ import { GalleryFormDialog } from "@/components/site/admin/gallery-form-dialog";
 import { deleteGalleryPhoto } from "@/lib/admin-actions";
 import { getAccessToken } from "@/lib/auth";
 import { getAdminGalleryPhotos } from "@/lib/data";
+import { resolveImageUrl } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -40,7 +41,7 @@ export default async function AdminGalleryPage() {
             <Card key={photo.id} className="overflow-hidden p-0">
               {/* eslint-disable-next-line @next/next/no-img-element -- arbitrary/dynamic storage host */}
               <img
-                src={photo.image_key}
+                src={resolveImageUrl(photo.image_key)}
                 alt={photo.alt_text ?? ""}
                 className="h-40 w-full object-cover"
               />

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { CampaignProgress } from "@/components/site/campaign-progress";
 import { DonationCard } from "@/components/site/donation-card";
 import { getCampaign } from "@/lib/data";
+import { resolveImageUrl } from "@/lib/utils";
 
 export default async function CampaignDetailPage({
   params,
@@ -34,7 +35,7 @@ export default async function CampaignDetailPage({
             {campaign.image_key ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
-                src={campaign.image_key}
+                src={resolveImageUrl(campaign.image_key)}
                 alt={campaign.title}
                 style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
               />

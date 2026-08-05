@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import { useBasket } from "@/components/site/basket-context";
 import { useCurrency } from "@/components/site/currency-context";
+import { resolveImageUrl } from "@/lib/utils";
 import { CURRENCIES } from "@/lib/currency";
 import type { Campaign, DonationFrequency } from "@/lib/types";
 
@@ -119,7 +120,7 @@ export function DonationCard({
       <div className="pt-donate-card-img-wrapper">
         {campaign.image_key ? (
           // eslint-disable-next-line @next/next/no-img-element -- arbitrary/dynamic storage host
-          <img src={campaign.image_key} alt={campaign.title} className="pt-donate-card-img" />
+          <img src={resolveImageUrl(campaign.image_key)} alt={campaign.title} className="pt-donate-card-img" />
         ) : null}
         <span className="pt-card-badge">{campaign.category}</span>
       </div>

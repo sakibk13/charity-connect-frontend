@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { EventRegisterForm } from "@/components/site/event-register-form";
 import { getEvent } from "@/lib/data";
 import { formatDate } from "@/lib/format";
+import { resolveImageUrl } from "@/lib/utils";
 
 export default async function EventDetailPage({
   params,
@@ -32,7 +33,7 @@ export default async function EventDetailPage({
           {event.image_key ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
-              src={event.image_key}
+              src={resolveImageUrl(event.image_key)}
               alt={event.title}
               style={{ width: "100%", height: "100%", objectFit: "cover" }}
             />

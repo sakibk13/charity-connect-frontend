@@ -6,6 +6,7 @@ import { ActionButton } from "@/components/site/admin/action-button";
 import { HeroSlideFormDialog } from "@/components/site/admin/hero-slide-form-dialog";
 import { getAccessToken } from "@/lib/auth";
 import { getAdminHeroSlides } from "@/lib/data";
+import { resolveImageUrl } from "@/lib/utils";
 import { deleteHeroSlide, setHeroSlideActive } from "@/lib/admin-actions";
 
 export const dynamic = "force-dynamic";
@@ -50,7 +51,7 @@ export default async function AdminHeroSlidesPage() {
                 <TableCell>
                   {/* eslint-disable-next-line @next/next/no-img-element -- arbitrary/dynamic storage host */}
                   <img
-                    src={slide.image_key}
+                    src={resolveImageUrl(slide.image_key)}
                     alt=""
                     className="h-12 w-20 rounded-md border object-cover"
                   />
