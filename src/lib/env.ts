@@ -3,7 +3,7 @@ function getApiUrl(): string {
   if (raw && (raw.startsWith("http://") || raw.startsWith("https://"))) {
     return raw.endsWith("/") ? raw.slice(0, -1) : raw;
   }
-  return "http://localhost:8000";
+  return "http://127.0.0.1:8000";
 }
 
 export const env = {

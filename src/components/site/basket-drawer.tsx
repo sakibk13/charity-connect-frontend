@@ -6,6 +6,7 @@ import { useBasket } from "@/components/site/basket-context";
 import { useCurrency } from "@/components/site/currency-context";
 import { useToast } from "@/components/site/toast-provider";
 import { computeBasketTotals } from "@/lib/basket-totals";
+import { resolveImageUrl } from "@/lib/utils";
 
 const FEE_FIXED_CENTS = 30;
 
@@ -42,16 +43,32 @@ export function BasketDrawer() {
               Your basket is empty. Add a donation from any campaign to get started.
             </p>
           ) : (
-            items.map((item) => (
-              <div key={item.key} className="pt-basket-item">
-                {/* eslint-disable-next-line @next/next/no-img-element -- arbitrary/dynamic storage host */}
-                <img
-                  src={item.campaignImage ?? undefined}
-                  alt=""
-                  className="pt-basket-item-img"
-                  style={{ visibility: item.campaignImage ? "visible" : "hidden" }}
-                />
-                <div className="pt-basket-item-info">
+            items.map((item) => {
+              const imgSrc = resolveImageUrl(item.campaignImage);
+              return (
+                <div key={item.key} className="pt-basket-item">
+                  {imgSrc ? (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img
+                      src={imgSrc}
+                      alt={item.campaignTitle}
+                      className="pt-basket-item-img"
+                    />
+                  ) : (
+                    <div
+                      className="pt-basket-item-img"
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        background: "var(--pt-primary-alpha)",
+                        color: "var(--pt-primary)",
+                      }}
+                    >
+                      <i className="fa-solid fa-hand-holding-heart" />
+                    </div>
+                  )}
+                  <div className="pt-basket-item-info">
                   <div className="pt-basket-item-title">{item.campaignTitle}</div>
                   <div className="pt-basket-item-sub">
                     {format(item.unitAmountCents)}
@@ -92,7 +109,8 @@ export function BasketDrawer() {
                   <i className="fa-solid fa-trash" />
                 </button>
               </div>
-            ))
+            );
+          })
           )}
         </div>
 

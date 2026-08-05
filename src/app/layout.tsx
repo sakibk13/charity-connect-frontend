@@ -36,6 +36,7 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${outfit.variable} ${plusJakarta.variable} ${robotoSlab.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
       <head>
         <link
@@ -43,7 +44,9 @@ export default function RootLayout({
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
         />
       </head>
-      <body className="min-h-full">{children}</body>
+      <body className="min-h-full" suppressHydrationWarning>
+        {children}
+      </body>
     </html>
   );
 }

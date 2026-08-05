@@ -35,12 +35,7 @@ const COUNTRIES = [
   ["TR", "Turkey"],
 ] as const;
 
-export function CheckoutForm({
-  customerId,
-  items,
-  coverFee,
-  totalCents,
-}: {
+export function StripeCheckoutForm(props: {
   customerId: string;
   items: BasketItem[];
   coverFee: boolean;
@@ -48,6 +43,24 @@ export function CheckoutForm({
 }) {
   const stripe = useStripe();
   const elements = useElements();
+  return <CheckoutForm {...props} stripe={stripe} elements={elements} />;
+}
+
+export function CheckoutForm({
+  customerId,
+  items,
+  coverFee,
+  totalCents,
+  stripe = null,
+  elements = null,
+}: {
+  customerId: string;
+  items: BasketItem[];
+  coverFee: boolean;
+  totalCents: number;
+  stripe?: any;
+  elements?: any;
+}) {
   const router = useRouter();
   const { clear } = useBasket();
   const { currency, format } = useCurrency();
@@ -158,7 +171,7 @@ export function CheckoutForm({
         succeededIds.push(...leg.donation_ids);
         continue;
       }
-      if (leg.status === "requires_action" && leg.client_secret) {
+      if (leg.status === "requires_action" && leg.client_secret && stripe) {
         const { error: confirmError, paymentIntent } = await stripe.confirmCardPayment(
           leg.client_secret
         );
@@ -313,44 +326,13 @@ export function CheckoutForm({
 
       <div className="pt-checkout-section">
         <h3 className="pt-checkout-section-title">
-          <i className="fa-solid fa-credit-card" /> Payment Details
+          <i className="fa-solid fa-credit-card" /> Card Details
         </h3>
-        {stripe && elements ? (
-          <PaymentElement
-            options={{
-              fields: { billingDetails: "never" },
-            }}
-          />
-        ) : (
-          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            <div className="pt-form-group" style={{ marginBottom: 0 }}>
-              <input
-                type="text"
-                className="pt-form-input"
-                placeholder="Card number (e.g. 4242 4242 4242 4242)"
-                defaultValue="4242 4242 4242 4242"
-              />
-            </div>
-            <div className="pt-grid pt-grid-2" style={{ gap: 12 }}>
-              <div className="pt-form-group" style={{ marginBottom: 0 }}>
-                <input
-                  type="text"
-                  className="pt-form-input"
-                  placeholder="MM / YY"
-                  defaultValue="12/28"
-                />
-              </div>
-              <div className="pt-form-group" style={{ marginBottom: 0 }}>
-                <input
-                  type="text"
-                  className="pt-form-input"
-                  placeholder="CVC"
-                  defaultValue="123"
-                />
-              </div>
-            </div>
-          </div>
-        )}
+        <PaymentElement
+          options={{
+            fields: { billingDetails: "never" },
+          }}
+        />
       </div>
 
       {error && (
@@ -360,7 +342,7 @@ export function CheckoutForm({
       <button
         type="submit"
         className="pt-btn pt-btn-primary pt-btn-pill pt-btn-full"
-        disabled={submitting}
+        disabled={!stripe || submitting}
       >
         {submitting ? (
           "Processing…"

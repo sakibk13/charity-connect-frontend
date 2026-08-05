@@ -11,21 +11,21 @@ import type { Campaign, DonationFrequency } from "@/lib/types";
 export const QUICK_DONATE_OPTIONS = [
   { id: "aqua-aid", title: "Aqua Aid" },
   { id: "sustain-now", title: "Sustain Now" },
+  { id: "building-hope", title: "Building Hope" },
   { id: "bright-futures", title: "Bright Futures" },
-  { id: "medi-help", title: "Medi Help" },
   { id: "emergency-aid", title: "Emergency Aid" },
-  { id: "rebuild-hope", title: "Rebuild Hope" },
   { id: "share-meals", title: "Share Meals" },
+  { id: "free-mobile-clinic", title: "Free Mobile Clinic" },
 ];
 
 const DEFAULT_OPTION_IMAGES: Record<string, string> = {
-  "aqua-aid": "/static/campaigns/hope-and-hygiene.jpg",
-  "sustain-now": "/static/campaigns/building-hope.jpg",
-  "bright-futures": "/static/campaigns/iftar-for-little-hearts.jpg",
-  "medi-help": "/static/campaigns/free-mobile-clinic.jpg",
-  "emergency-aid": "/static/campaigns/food-relief.jpg",
-  "rebuild-hope": "/static/campaigns/building-hope.jpg",
-  "share-meals": "/static/campaigns/ramadan-food-pack.jpg",
+  "aqua-aid": "/static/campaigns/aqua-aid.jpg",
+  "sustain-now": "/static/campaigns/sustain-now.jpg",
+  "building-hope": "/static/campaigns/building-hope.jpg",
+  "bright-futures": "/static/campaigns/bright-futures.jpg",
+  "emergency-aid": "/static/campaigns/emergency-aid.jpg",
+  "share-meals": "/static/campaigns/share-meals.jpg",
+  "free-mobile-clinic": "/static/campaigns/free-mobile-clinic.jpg",
 };
 
 export function QuickDonateBar({ campaigns }: { campaigns?: Campaign[] }) {

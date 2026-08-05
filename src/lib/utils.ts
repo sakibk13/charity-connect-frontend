@@ -9,7 +9,7 @@ export function cn(...inputs: ClassValue[]) {
 export function resolveImageUrl(key: string | null | undefined): string {
   if (!key) return "";
   let url = key.trim();
-  if (url.includes("localhost")) {
+  if (url.includes("localhost") || url.includes("127.0.0.1")) {
     url = url.replace(/^https?:\/\/[^\/]+/, "");
   }
   if (url.startsWith("/static/") || url.startsWith("static/")) {

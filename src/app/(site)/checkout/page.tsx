@@ -5,10 +5,11 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { useBasket } from "@/components/site/basket-context";
-import { CheckoutForm } from "@/components/site/checkout-form";
+import { CheckoutForm, StripeCheckoutForm } from "@/components/site/checkout-form";
 import { useCurrency } from "@/components/site/currency-context";
 import { computeBasketTotals } from "@/lib/basket-totals";
 import { createSetupIntent } from "@/lib/donation-actions";
+import { env } from "@/lib/env";
 import { getStripe } from "@/lib/stripe-client";
 import { resolveImageUrl } from "@/lib/utils";
 
@@ -76,26 +77,21 @@ export default function CheckoutPage() {
             {error && (
               <p style={{ color: "var(--pt-danger)", marginBottom: 16 }}>{error}</p>
             )}
-            {setupIntent?.clientSecret && !setupIntent.clientSecret.includes("mock") && env.stripePublishableKey ? (
+            {setupIntent ? (
               <Elements
                 stripe={getStripe()}
                 options={{ clientSecret: setupIntent.clientSecret, appearance: { theme: "stripe" } }}
               >
-                <CheckoutForm
+                <StripeCheckoutForm
                   customerId={setupIntent.customerId}
                   items={items}
                   coverFee={coverFee}
                   totalCents={totalCents}
                 />
               </Elements>
-            ) : (
-              <CheckoutForm
-                customerId={setupIntent?.customerId ?? "cus_mock_local_dev"}
-                items={items}
-                coverFee={coverFee}
-                totalCents={totalCents}
-              />
-            )}
+            ) : !error ? (
+              <p style={{ color: "var(--pt-text-muted)" }}>Loading secure checkout…</p>
+            ) : null}
           </div>
 
           <div className="pt-order-summary">
