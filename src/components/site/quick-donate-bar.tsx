@@ -52,7 +52,7 @@ export function QuickDonateBar({ campaigns }: { campaigns?: Campaign[] }) {
     addItem({
       campaignId: matchingCampaign?.id ?? currentOption.id,
       campaignTitle: currentOption.title,
-      campaignImage: matchingCampaign?.image_key ?? undefined,
+      campaignImage: matchingCampaign?.image_key ?? null,
       unitAmountCents: activeCents,
       frequency,
     });
