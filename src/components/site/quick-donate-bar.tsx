@@ -9,13 +9,13 @@ import { CURRENCIES } from "@/lib/currency";
 import type { Campaign, DonationFrequency } from "@/lib/types";
 
 export const QUICK_DONATE_OPTIONS = [
-  { id: "aqua-aid", title: "💧 Aqua Aid" },
-  { id: "sustain-now", title: "🌿 Sustain Now" },
-  { id: "bright-futures", title: "🎓 Bright Futures" },
-  { id: "medi-help", title: "🏥 Medi Help" },
-  { id: "emergency-aid", title: "🆘 Emergency Aid" },
-  { id: "rebuild-hope", title: "🏗️ Rebuild Hope" },
-  { id: "share-meals", title: "🍲 Share Meals" },
+  { id: "aqua-aid", title: "Aqua Aid" },
+  { id: "sustain-now", title: "Sustain Now" },
+  { id: "bright-futures", title: "Bright Futures" },
+  { id: "medi-help", title: "Medi Help" },
+  { id: "emergency-aid", title: "Emergency Aid" },
+  { id: "rebuild-hope", title: "Rebuild Hope" },
+  { id: "share-meals", title: "Share Meals" },
 ];
 
 export function QuickDonateBar({ campaigns }: { campaigns?: Campaign[] }) {
