@@ -9,12 +9,13 @@ import { CURRENCIES } from "@/lib/currency";
 import type { Campaign, DonationFrequency } from "@/lib/types";
 
 export const QUICK_DONATE_OPTIONS = [
-  { id: "iftar-for-little-hearts", title: "Iftar for Little Hearts" },
-  { id: "ramadan-food-pack", title: "Ramadan Food Pack" },
-  { id: "free-mobile-clinic", title: "Free Mobile Clinic" },
-  { id: "building-hope", title: "Building Hope" },
-  { id: "food-relief", title: "Food Relief" },
-  { id: "hope-and-hygiene", title: "Hope and Hygiene" },
+  { id: "aqua-aid", title: "💧 Aqua Aid" },
+  { id: "sustain-now", title: "🌿 Sustain Now" },
+  { id: "bright-futures", title: "🎓 Bright Futures" },
+  { id: "medi-help", title: "🏥 Medi Help" },
+  { id: "emergency-aid", title: "🆘 Emergency Aid" },
+  { id: "rebuild-hope", title: "🏗️ Rebuild Hope" },
+  { id: "share-meals", title: "🍲 Share Meals" },
 ];
 
 export function QuickDonateBar({ campaigns }: { campaigns?: Campaign[] }) {
