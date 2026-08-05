@@ -9,6 +9,19 @@ export function cn(...inputs: ClassValue[]) {
 export function resolveImageUrl(key: string | null | undefined): string {
   if (!key) return "";
   let url = key.trim();
+
+  // Extract filename from URL/path
+  const filename = url.split("/").pop()?.split("?")[0] || "";
+  if (
+    filename &&
+    (filename.endsWith(".jpg") ||
+      filename.endsWith(".png") ||
+      filename.endsWith(".jpeg") ||
+      filename.endsWith(".svg"))
+  ) {
+    return `/${filename}`;
+  }
+
   if (url.includes("localhost") || url.includes("127.0.0.1")) {
     url = url.replace(/^https?:\/\/[^\/]+/, "");
   }
