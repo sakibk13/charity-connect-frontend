@@ -8,22 +8,32 @@ import { useCurrency } from "@/components/site/currency-context";
 import { CURRENCIES } from "@/lib/currency";
 import type { Campaign, DonationFrequency } from "@/lib/types";
 
-export function QuickDonateBar({ campaigns }: { campaigns: Campaign[] }) {
+export const QUICK_DONATE_OPTIONS = [
+  { id: "aqua-aid", title: "Aqua Aid" },
+  { id: "sustain-now", title: "Sustain Now" },
+  { id: "bright-futures", title: "Bright Futures" },
+  { id: "medi-help", title: "Medi Help" },
+  { id: "emergency-aid", title: "Emergency Aid" },
+  { id: "rebuild-hope", title: "Rebuild Hope" },
+  { id: "share-meals", title: "Share Meals" },
+];
+
+export function QuickDonateBar({ campaigns }: { campaigns?: Campaign[] }) {
   const { addItem } = useBasket();
   const { currency, format } = useCurrency();
   const [frequency, setFrequency] = useState<DonationFrequency>("one_time");
-  const [campaignId, setCampaignId] = useState(campaigns[0]?.id ?? "");
+  const [selectedOptionId, setSelectedOptionId] = useState(QUICK_DONATE_OPTIONS[0].id);
   const [selected, setSelected] = useState<number>(DONATION_PRESETS.one_time[0]);
   const [customAmount, setCustomAmount] = useState("");
-
-  if (campaigns.length === 0) return null;
 
   const presets = DONATION_PRESETS[frequency];
   const customCents = customAmount
     ? Math.round((parseFloat(customAmount) / CURRENCIES[currency].rateFromUsd) * 100)
     : 0;
   const activeCents = customCents > 0 ? customCents : selected;
-  const campaign = campaigns.find((c) => c.id === campaignId) ?? campaigns[0];
+
+  const currentOption =
+    QUICK_DONATE_OPTIONS.find((o) => o.id === selectedOptionId) ?? QUICK_DONATE_OPTIONS[0];
 
   const switchFrequency = (next: DonationFrequency) => {
     setFrequency(next);
@@ -33,10 +43,16 @@ export function QuickDonateBar({ campaigns }: { campaigns: Campaign[] }) {
 
   const handleAdd = () => {
     if (!activeCents || activeCents <= 0) return;
+    const matchingCampaign = campaigns?.find(
+      (c) =>
+        c.title.toLowerCase().includes(currentOption.title.toLowerCase()) ||
+        c.id === currentOption.id
+    );
+
     addItem({
-      campaignId: campaign.id,
-      campaignTitle: campaign.title,
-      campaignImage: campaign.image_key,
+      campaignId: matchingCampaign?.id ?? currentOption.id,
+      campaignTitle: currentOption.title,
+      campaignImage: matchingCampaign?.image_key ?? undefined,
       unitAmountCents: activeCents,
       frequency,
     });
@@ -67,13 +83,13 @@ export function QuickDonateBar({ campaigns }: { campaigns: Campaign[] }) {
 
           <select
             className="pt-quickdonate-select"
-            value={campaign.id}
-            onChange={(e) => setCampaignId(e.target.value)}
+            value={selectedOptionId}
+            onChange={(e) => setSelectedOptionId(e.target.value)}
             aria-label="Select appeal to support"
           >
-            {campaigns.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.title}
+            {QUICK_DONATE_OPTIONS.map((opt) => (
+              <option key={opt.id} value={opt.id}>
+                {opt.title}
               </option>
             ))}
           </select>
