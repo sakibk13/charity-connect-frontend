@@ -4,9 +4,11 @@ function getApiUrl(): string {
     return raw.endsWith("/") ? raw.slice(0, -1) : raw;
   }
   if (
-    typeof window !== "undefined" &&
-    !window.location.hostname.includes("localhost") &&
-    !window.location.hostname.includes("127.0.0.1")
+    process.env.NODE_ENV === "production" ||
+    process.env.VERCEL === "1" ||
+    (typeof window !== "undefined" &&
+      !window.location.hostname.includes("localhost") &&
+      !window.location.hostname.includes("127.0.0.1"))
   ) {
     return "https://charity-connect-backend.onrender.com";
   }
