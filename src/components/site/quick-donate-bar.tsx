@@ -18,6 +18,16 @@ export const QUICK_DONATE_OPTIONS = [
   { id: "share-meals", title: "Share Meals" },
 ];
 
+const DEFAULT_OPTION_IMAGES: Record<string, string> = {
+  "aqua-aid": "/static/campaigns/hope-and-hygiene.jpg",
+  "sustain-now": "/static/campaigns/building-hope.jpg",
+  "bright-futures": "/static/campaigns/iftar-for-little-hearts.jpg",
+  "medi-help": "/static/campaigns/free-mobile-clinic.jpg",
+  "emergency-aid": "/static/campaigns/food-relief.jpg",
+  "rebuild-hope": "/static/campaigns/building-hope.jpg",
+  "share-meals": "/static/campaigns/ramadan-food-pack.jpg",
+};
+
 export function QuickDonateBar({ campaigns }: { campaigns?: Campaign[] }) {
   const { addItem } = useBasket();
   const { currency, format } = useCurrency();
@@ -51,10 +61,15 @@ export function QuickDonateBar({ campaigns }: { campaigns?: Campaign[] }) {
         c.id === currentOption.id
     );
 
+    const imageKey =
+      matchingCampaign?.image_key ||
+      DEFAULT_OPTION_IMAGES[currentOption.id] ||
+      "/static/campaigns/food-relief.jpg";
+
     addItem({
       campaignId: matchingCampaign?.id ?? currentOption.id,
       campaignTitle: currentOption.title,
-      campaignImage: matchingCampaign?.image_key ?? null,
+      campaignImage: imageKey,
       unitAmountCents: activeCents,
       frequency,
     });

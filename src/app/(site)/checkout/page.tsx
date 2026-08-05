@@ -16,6 +16,7 @@ export default function CheckoutPage() {
   const { items, coverFee } = useBasket();
   const { currency, format } = useCurrency();
   const router = useRouter();
+  const [mounted, setMounted] = useState(false);
   const [setupIntent, setSetupIntent] = useState<{
     customerId: string;
     clientSecret: string;
@@ -23,6 +24,11 @@ export default function CheckoutPage() {
   const [error, setError] = useState("");
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
     if (items.length === 0) {
       router.replace("/donate");
       return;
@@ -39,10 +45,20 @@ export default function CheckoutPage() {
     return () => {
       cancelled = true;
     };
-    // Only ever needs to run once per page visit — re-running on every basket change
-    // would recreate the SetupIntent mid-fill.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [mounted, items.length, router]);
+
+  if (!mounted) {
+    return (
+      <section className="pt-section">
+        <div className="pt-container" style={{ maxWidth: 1100 }}>
+          <h1 className="pt-section-title" style={{ marginBottom: 40 }}>
+            Checkout
+          </h1>
+          <p style={{ color: "var(--pt-text-muted)" }}>Loading secure checkout…</p>
+        </div>
+      </section>
+    );
+  }
 
   if (items.length === 0) return null;
 
