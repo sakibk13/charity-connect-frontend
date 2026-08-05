@@ -28,9 +28,17 @@ async function getOrNull<T>(path: string): Promise<T | null> {
   }
 }
 
+async function safeFetch<T>(fetchFn: () => Promise<T>, fallback: T): Promise<T> {
+  try {
+    return await fetchFn();
+  } catch {
+    return fallback;
+  }
+}
+
 // Campaigns
 export function getCampaigns(params?: { search?: string; category?: string }) {
-  return apiFetch<Campaign[]>(`/api/v1/campaigns${query(params ?? {})}`);
+  return safeFetch(() => apiFetch<Campaign[]>(`/api/v1/campaigns${query(params ?? {})}`), []);
 }
 
 export function getCampaign(slug: string) {
@@ -39,7 +47,7 @@ export function getCampaign(slug: string) {
 
 // Events
 export function getEvents(params?: { search?: string }) {
-  return apiFetch<EventItem[]>(`/api/v1/events${query(params ?? {})}`);
+  return safeFetch(() => apiFetch<EventItem[]>(`/api/v1/events${query(params ?? {})}`), []);
 }
 
 export function getEvent(slug: string) {
@@ -48,7 +56,7 @@ export function getEvent(slug: string) {
 
 // Blog
 export function getBlogPosts(params?: { category?: string; campaign_id?: string }) {
-  return apiFetch<BlogPost[]>(`/api/v1/blog${query(params ?? {})}`);
+  return safeFetch(() => apiFetch<BlogPost[]>(`/api/v1/blog${query(params ?? {})}`), []);
 }
 
 export function getBlogPost(slug: string) {
@@ -57,17 +65,20 @@ export function getBlogPost(slug: string) {
 
 // Zakat
 export function getZakatSetting() {
-  return apiFetch<ZakatSetting>("/api/v1/zakat-settings");
+  return safeFetch(
+    () => apiFetch<ZakatSetting>("/api/v1/zakat-settings"),
+    { nisab_value: 520.0 } as ZakatSetting
+  );
 }
 
 // Hero slides
 export function getHeroSlides() {
-  return apiFetch<HeroSlide[]>("/api/v1/hero-slides");
+  return safeFetch(() => apiFetch<HeroSlide[]>("/api/v1/hero-slides"), []);
 }
 
 // Gallery photos
 export function getGalleryPhotos(params?: { category?: string }) {
-  return apiFetch<GalleryPhoto[]>(`/api/v1/gallery-photos${query(params ?? {})}`);
+  return safeFetch(() => apiFetch<GalleryPhoto[]>(`/api/v1/gallery-photos${query(params ?? {})}`), []);
 }
 
 // Donations
