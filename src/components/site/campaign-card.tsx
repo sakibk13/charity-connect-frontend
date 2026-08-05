@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { CampaignProgress } from "@/components/site/campaign-progress";
+import { resolveImageUrl } from "@/lib/utils";
 import type { Campaign } from "@/lib/types";
 
 export function CampaignCard({ campaign }: { campaign: Campaign }) {
@@ -9,7 +10,7 @@ export function CampaignCard({ campaign }: { campaign: Campaign }) {
       <div className="pt-card-img-wrapper">
         {campaign.image_key ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={campaign.image_key} alt={campaign.title} className="pt-card-img" />
+          <img src={resolveImageUrl(campaign.image_key)} alt={campaign.title} className="pt-card-img" />
         ) : null}
         <span className="pt-card-badge">{campaign.category}</span>
       </div>

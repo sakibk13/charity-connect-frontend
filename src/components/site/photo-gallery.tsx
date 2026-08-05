@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 
+import { resolveImageUrl } from "@/lib/utils";
 import type { GalleryPhoto } from "@/lib/types";
 
 export const GALLERY_CATEGORIES = [
@@ -82,7 +83,7 @@ export function PhotoGallery({ photos: allPhotos }: { photos: GalleryPhoto[] }) 
               >
                 {/* eslint-disable-next-line @next/next/no-img-element -- arbitrary/dynamic storage host */}
                 <img
-                  src={photo.image_key}
+                  src={resolveImageUrl(photo.image_key)}
                   alt={photo.alt_text ?? ""}
                   style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
                 />

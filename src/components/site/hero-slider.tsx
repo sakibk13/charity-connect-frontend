@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 
 import { useCurrency } from "@/components/site/currency-context";
+import { resolveImageUrl } from "@/lib/utils";
 import type { HeroSlide } from "@/lib/types";
 
 const AUTOPLAY_MS = 6000;
@@ -37,7 +38,7 @@ export function HeroSlider({
       {slides.map((slide, i) => (
         <div key={slide.id} className={`pt-hero-slide${i === index ? " active" : ""}`}>
           {/* eslint-disable-next-line @next/next/no-img-element -- arbitrary/dynamic storage host */}
-          <img src={slide.image_key} alt="" className="pt-hero-slide-img" />
+          <img src={resolveImageUrl(slide.image_key)} alt="" className="pt-hero-slide-img" />
           <div className="pt-hero-slide-overlay" />
           <div className="pt-container pt-hero-slide-content">
             <h1 className="pt-hero-slide-headline">{slide.headline}</h1>
