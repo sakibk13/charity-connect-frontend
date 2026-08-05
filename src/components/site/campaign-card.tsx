@@ -4,7 +4,18 @@ import { CampaignProgress } from "@/components/site/campaign-progress";
 import { resolveImageUrl } from "@/lib/utils";
 import type { Campaign } from "@/lib/types";
 
+const SHOW_RAISED_SLUGS = new Set([
+  "aqua-aid",
+  "sustain-now",
+  "building-hope",
+  "bright-futures",
+  "emergency-aid",
+  "share-meals",
+  "free-mobile-clinic",
+]);
+
 export function CampaignCard({ campaign }: { campaign: Campaign }) {
+  const showProgress = SHOW_RAISED_SLUGS.has(campaign.slug);
   return (
     <div className="pt-card">
       <div className="pt-card-img-wrapper">
@@ -17,8 +28,14 @@ export function CampaignCard({ campaign }: { campaign: Campaign }) {
       <div className="pt-card-body">
         <h3 className="pt-card-title">{campaign.title}</h3>
         <p className="pt-card-description">{campaign.description}</p>
-        <div className="pt-progress-container">
-          <CampaignProgress raised={campaign.raised} goal={campaign.goal} />
+        <div
+          className="pt-progress-container"
+          style={{
+            visibility: showProgress ? "visible" : "hidden",
+            minHeight: showProgress ? undefined : "46px",
+          }}
+        >
+          {showProgress && <CampaignProgress raised={campaign.raised} goal={campaign.goal} />}
         </div>
       </div>
       <div className="pt-card-footer pt-card-cta-row">
